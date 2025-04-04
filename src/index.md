@@ -2970,7 +2970,7 @@ The **absolute utilisation** parameter&nbsp;${tex`\eta`} is defined
 as&nbsp;${tex`\eta = 0`} if ${tex`G + L = 0`}, otherwise:
 
 ```js
-html`<span id="equation-39">${tex.block`\eta = \frac{1}{1 - \log(G + L)}
+html`<span id="equation-39">${tex.block`\eta = \frac{1}{1 - \ln(G + L)}
   \tag{39}`}</span>`
 ```
 

@@ -2508,14 +2508,15 @@ This additional section is not is the original PDF version of the whitepaper. It
 presents an interactive model of the AAM where each parameter of interest can be
 adjusted by the reader.
 
-In [Section&nbsp;3.4.1](#3-4-1-a-tokens-emitted-when-the-aam-purchases-carbon),
+In
+[Section&nbsp;3.4.1](#3-4-1-klima-tokens-emitted-when-the-aam-purchases-carbon),
 a Carbon holder sells Carbon to the AAM in exchange for **A**&nbsp;tokens; from
 the point of view of the AAM, this represents a Carbon purchase. In
-[Section&nbsp;3.4.2](#3-4-2-carbon-sold-by-the-aam-when-it-burns-a-tokens), a
-holder of **A**&nbsp;tokens burns **A**&nbsp;tokens to buy Carbon from the AAM;
-from the point of view of the AAM, this represents a Carbon sale.
+[Section&nbsp;3.4.2](#3-4-2-carbon-sold-by-the-aam-when-it-burns-klima-tokens),
+a holder of **A**&nbsp;tokens burns **A**&nbsp;tokens to buy Carbon from the
+AAM; from the point of view of the AAM, this represents a Carbon sale.
 
-#### 3.4.1 A Tokens Emitted When the AAM Purchases Carbon
+#### 3.4.1 KLIMA Tokens Emitted When the AAM Purchases Carbon
 
 In this section, the reader controls how many present-value tonnes of Carbon
 class&nbsp;${tex`i`} are purchased by the AAM. The number of **A**&nbsp;tokens
@@ -2693,7 +2694,7 @@ const stringBarCiPrice = "$" + paramBarCiPrice.toLocaleString(
 );
 ```
 
-#### 3.4.2 Carbon Sold by the AAM When it Burns A Tokens
+#### 3.4.2 Carbon Sold by the AAM When it Burns KLIMA Tokens
 
 In this section, the reader controls how many **A**&nbsp;tokens are burnt by the
 AAM. The number of liquid tonnes of Carbon class&nbsp;${tex`i`} sold by the AAM

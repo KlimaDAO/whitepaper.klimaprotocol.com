@@ -16,7 +16,7 @@ title: White Paper
   Asset pricing, Liquidity and Bond Markets powered by a Dual Token structure
   designed for efficient and rational decentralised liquidity within the carbon
   credit asset class.
-<p class="u-center">Version&nbsp;1.42
+<p class="u-center">Version&nbsp;1.43
 <p class="u-center"><img src="res/darksole.webp" height=60>
 <table class="Copyright">
   <tr class="Copyright-row">
@@ -2616,15 +2616,16 @@ The total Risky Yield tokens&nbsp;${tex`R_\lambda`}:
 <div id="equation-29">
 
 ```tex
-R_\lambda = b \, R \, (\Lambda_3 + \Lambda_4 + \Lambda_5) \tag{29}
+R_\lambda = b \, R \, (\Lambda_{GG} + \Lambda_G + \Lambda_Q) \tag{29}
 ```
 
 </div>
 
 The allocations of&nbsp;${tex`R_\lambda`} are pro-rata
-to&nbsp;${tex`\Lambda_3`}, ${tex`\Lambda_4`}, ${tex`\Lambda_5`} and thereafter:
+to&nbsp;${tex`\Lambda_{GG}`}, ${tex`\Lambda_G`}, ${tex`\Lambda_Q`} and
+thereafter:
 
-1. Locked **G**: ${tex`\Lambda_3`} in proportion to **G**.
+1. Locked **G**: ${tex`\Lambda_{GG}`} in proportion to **G**.
 
 2. Locked <span class="u-overline">**AG**</span>,
 <span class="u-overline">**AQ**</span> tokens are allocated a
@@ -3262,7 +3263,7 @@ as&nbsp;${tex`\eta = 0`} if ${tex`G + L = 0`}, otherwise:
 <div id="equation-36">
 
 ```tex
-\eta = \frac{1}{1 - \ln(G + L)} \tag{36}
+\eta = \frac{2 G L}{G (1 - G) + L ( 1 - L)} \tag{36}
 ```
 
 </div>
@@ -3272,7 +3273,7 @@ function computeEta(G, L) {
   if (G === 0 && L === 0) {
     return 0;
   } else {
-    return 1 / (1 - Math.log(G + L));
+    return 2 * G * L / (G * (1 - G) + L * (1 - L));
   }
 }
 ```
@@ -3617,8 +3618,8 @@ display(plotAllocationPool);
 
 ```js
 const inputWeightAG = view(Inputs.range([1, 0], {
-  label: tex`\text{Relative share of **A**~tokens held in }
-    \overline{**AG**}~\text{pool}`,
+  label: tex`\text{Relative share of \textbf{A}~tokens held in }
+    \overline{\textbf{AG}}~\text{pool}`,
   step: 0.01,
   value: 0.5,
 }));

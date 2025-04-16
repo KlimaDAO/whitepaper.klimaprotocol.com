@@ -3463,13 +3463,13 @@ for (let paramG = 0; paramG < 1.01; paramG += 0.1) {
         key: "𝗔 Bonds Allocation",
         l: paramL,
         g: paramG,
-        value: computeIBonds(paramG, paramL, inputS__),
+        value: computeIBonds(paramG, paramL, inputS_),
       });
       allocationSQData.push({
         key: "𝗚 Staking Allocation",
         l: paramL,
         g: paramG,
-        value: computeIStaking(paramG, paramL, inputS__),
+        value: computeIStaking(paramG, paramL, inputS_),
       });
     }
   }
@@ -3534,7 +3534,7 @@ display(plotAllocationSQ);
 ```
 
 ```js
-const inputS__ = view(Inputs.range([1, 0], {
+const inputS_ = view(Inputs.range([1, 0], {
   label: tex`S \text{ (share of } A \text{ tokens staked for bonds)}`,
   step: 0.01,
   value: 0.5,
@@ -3623,7 +3623,9 @@ const inputWeightAG = view(Inputs.range([1, 0], {
   step: 0.01,
   value: 0.5,
 }));
+```
 
+```js
 const paramWeightAQ = 1 - inputWeightAG;
 ```
 

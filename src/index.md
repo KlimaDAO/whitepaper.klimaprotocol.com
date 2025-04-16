@@ -10,7 +10,7 @@ title: White Paper
 <p class="u-center">With contributions from
   <a href="mailto:scott@klimadao.finance"
      class="u-nocolor">scott@klimadao.finance</a>
-<p class="u-center">April 7, 2025
+<p class="u-center">April 16, 2025
 <p class="u-center"><img src="res/klimaprotocol.svg" height=60>
 <p class="u-center">An <strong>Autonomous Asset Manager</strong> incorporating
   Asset pricing, Liquidity and Bond Markets powered by a Dual Token structure

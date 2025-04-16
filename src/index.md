@@ -194,9 +194,9 @@ Three economic pillars support the Klima&nbsp;2.0&nbsp;AAM:
     - Locked **KLIMA**:**KlimaX**&nbsp;liquidity participates in general
     governance alongside Bond-holders.
 
-    Noting that _Staking_ and _Locking_ are used interchangeably throughout the
-    paper and for this model are identical functions where asset-transfers are
-    disabled for the period specified.
+Noting that _Staking_ and _Locking_ are used interchangeably throughout the
+paper and for this model are identical functions where asset-transfers are
+disabled for the period specified.
 
 ### 2.3 Economics and Incentives
 
@@ -448,7 +448,7 @@ its Treasury as assets, which will be used to create the initial issuance of
     Those who wish to generate liquidity fees on their portfolio of
     Klima&nbsp;2.0 Assets coupled together or with USDC.
 
-    _**Liquidity Market**: LPS are incentivised by the Synthetic Yield
+    _**Liquidity Market**: LPs are incentivised by the Synthetic Yield
     calculated from system metrics to compensate them for risk._
  
  5. **Active Portfolio Optimisation**
@@ -978,8 +978,8 @@ to two cohorts:
 1. Bond staking: ${tex`S_t`}
 
 2. Locked liquidity in the
-**A**--**G**&nbsp;pair&nbsp;<span class="u-overline">**AG**</span>&nbsp;(see
-[Section&nbsp;3.3](#3-3-liquidity-markets)) defined here as&nbsp;${tex`A_{Gt}`}
+**A**-**G**&nbsp;pair&nbsp;<span class="u-overline">**AG**</span>&nbsp;(see
+[Section&nbsp;3.3](#3-3-liquidity-markets)) defined here as&nbsp;${tex`A_{Gt}`},
 representing the quantity of **A**&nbsp;tokens held in the liquidity pool
 expressed as a proportion of circulating supply.
 
@@ -1054,7 +1054,7 @@ through governance by the **A**&nbsp;token and the
 [Section&nbsp;3.1.2](#3-1-2-governance-weightings)).
 
 For Carbon pricing, both the **A**&nbsp;tokens and the **G**&nbsp;tokens may
-stake for specific Carbon classes&nbsp;${tex`C_i`} and these are independent
+stake for specific Carbon classes&nbsp;${tex`i`} and these are independent
 stakes between the two token systems.
 
 <figure id="figure-10" class="u-center">
@@ -1311,7 +1311,7 @@ solve for token quantities.
 [Figure&nbsp;11](#figure-11) illustrates the **G**&nbsp;token capacity to
 maintain the initial Portfolio pricing of the **A**&nbsp;token. The data has
 been normalised in [Figure&nbsp;12](#figure-12)
-to&nbsp;${tex`\Delta \bar C_i A_i`}.
+to&nbsp;${tex`\Delta \bar C_i \, A_i`}.
 
 ```js
 function contrastingTextColor(backgroundColor) {
@@ -2345,8 +2345,8 @@ particularly if&nbsp;${tex`G = 0`}, ${tex`\beta = 0`}.
 
 The residual share, ${tex`1 - λ_{GG}`}, is split between the liquidity pools:
 
-<span id="equation-25">${tex.block`\lambda_G =
-  \frac{2 \, A_G}{2 \, A_G + A_Q \, \sqrt 2} \tag{25}`}</span>
+<span id="equation-25">${tex.block`\lambda_G = \frac{2 A_G}{2 A_G + A_Q \sqrt 2}
+  \tag{25}`}</span>
 
 ```js
 function computeLambdaG(AQ, AG) {

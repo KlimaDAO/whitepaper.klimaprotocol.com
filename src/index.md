@@ -121,7 +121,7 @@ token&nbsp;**KLIMA** that:
 
 <figure id="figure-1" class="u-center">
 <figcaption>Figure&nbsp;1: Klima&nbsp;2.0 Design</figcaption>
-${FileAttachment("res/figure-1.svg").image({ alt: "Klima 2.0 Design" })}
+<img alt="Klima 2.0 Design" src="res/figure-1.svg">
 </figure>
 
 Klima&nbsp;2.0 provides a fundamental capital, liquidity and execution layer for
@@ -147,7 +147,7 @@ selection and pricing capacity.
 
 <figure id="figure-2" class="u-center">
 <figcaption>Figure&nbsp;2: Token Replacement</figcaption>
-${FileAttachment("res/figure-2.svg").image({ alt: "Token Replacement" })}
+<img alt="Token Replacement" src="res/figure-2.svg">
 </figure>
 
 **KLIMA**&nbsp;tokens have the beneficial ownership of the Portfolio and set
@@ -162,7 +162,7 @@ optimisation as a result of collective owner utility-function.
 
 <figure id="figure-3" class="u-center">
 <figcaption>Figure&nbsp;3: Klima&nbsp;2.0 Architecture</figcaption>
-${FileAttachment("res/figure-3.svg").image({ alt: "Klima 2.0 Architecture" })}
+<img alt="Klima 2.0 Architecture" src="res/figure-3.svg">
 </figure>
 
 Three economic pillars support the Klima&nbsp;2.0&nbsp;AAM:
@@ -237,9 +237,7 @@ token-holder actions&nbsp;(and inaction).
 
 <figure id="figure-4" class="u-center">
 <figcaption>Figure&nbsp;4: Klima&nbsp;2.0 Portfolio Manager</figcaption>
-${FileAttachment("res/figure-4.svg").image(
-  { alt: "Klima 2.0 Portfolio Manager" },
-)}
+<img alt="Klima 2.0 Portfolio Manager" src="res/figure-4.svg">
 </figure>
 
 The AAM **purchases** Carbon credits and **sells** Offset certificates by
@@ -318,7 +316,7 @@ Noting that the tokens can delegate utility as required.
 
 <figure id="figure-5" class="u-center">
 <figcaption>Figure&nbsp;5: AAM Token Utility</figcaption>
-${FileAttachment("res/figure-5.svg").image({ alt: "AAM Token Utility" })}
+<img alt="AAM Token Utility" src="res/figure-5.svg">
 </figure>
 
 #### 2.5.3 Risk Governance Token: KlimaX
@@ -346,7 +344,7 @@ functions which are not independent:
 
 <figure id="figure-6" class="u-center">
 <figcaption>Figure&nbsp;6: <strong>KLIMA</strong> Staking</figcaption>
-${FileAttachment("res/figure-6.svg").image({ alt: "KLIMA Staking" })}
+<img alt="KLIMA Staking" src="res/figure-6.svg">
 </figure>
 
 1. **Bonds**: The **KLIMA**&nbsp;token is locked for a specific period of time
@@ -663,8 +661,13 @@ const vecReverseCumsumS = d3.cumsum(vecS.slice().reverse()).reverse();
 
 Calculating curve parameters&nbsp;${tex`D`}, ${tex`C`}:
 
-<span id="equation-1">${tex.block`D = \frac{1}{S} \sum_{t=1}^{40} S_t \, E_t
-  \tag{1}`}</span>
+<div id="equation-1">
+
+```tex
+D = \frac{1}{S} \sum_{t=1}^{40} S_t \, E_t \tag{1}
+```
+
+</div>
 
 ```js
 function dotProduct(v, w) {
@@ -683,8 +686,13 @@ function weightedArithmeticMean(v, weights) {
 const paramD = weightedArithmeticMean(vecE, vecS);
 ```
 
-<span id="equation-2">${tex.block`C = \frac{1}{S} \sum_{t=1}^{40} S_t \, E_t^2
-  \tag{2}`}</span>
+<div id="equation-2">
+
+```tex
+C = \frac{1}{S} \sum_{t=1}^{40} S_t \, E_t^2 \tag{2}
+```
+
+</div>
 
 ```js
 const paramC = weightedArithmeticMean(vecE.map(e => e * e), vecS);
@@ -692,8 +700,14 @@ const paramC = weightedArithmeticMean(vecE.map(e => e * e), vecS);
 
 The shape of the yield curve is produced:
 
-<span id="equation-3">${tex.block`\gamma_t = \max
-  \left( \frac{E_t}{D} - \frac{E_t^2}{2 \, C}, \, 0 \right) \tag{3}`}</span>
+<div id="equation-3">
+
+```tex
+\gamma_t = \max \left( \frac{E_t}{D} - \frac{E_t^2}{2 \, C}, \, 0 \right)
+  \tag{3}
+```
+
+</div>
 
 ```js
 function computeGamma(vecE, paramD, paramC) {
@@ -708,8 +722,13 @@ const vecGamma = computeGamma(vecE, paramD, paramC);
 
 Normalising&nbsp;${tex`\gamma_t`} to&nbsp;${tex`\hat \gamma_t`}:
 
-<span id="equation-4">${tex.block`\hat \gamma_t =
-  \frac{\gamma_t}{\sum_{t=1}^{40} \gamma_t} \tag{4}`}</span>
+<div id="equation-4">
+
+```tex
+\hat \gamma_t = \frac{\gamma_t}{\sum_{t=1}^{40} \gamma_t} \tag{4}
+```
+
+</div>
 
 ```js
 function normalize(v) {
@@ -725,8 +744,13 @@ const vecNormGamma = normalize(vecGamma);
 With the cumulative sum of the normalised values expressed
 as&nbsp;${tex`\Gamma_t`}:
 
-<span id="equation-5">${tex.block`\Gamma_t = \sum_{i=1}^t \hat \gamma_i
-  \quad \text{for } t = 1, \dots, 40 \tag{5}`}</span>
+<div id="equation-5">
+
+```tex
+\Gamma_t = \sum_{i=1}^t \hat \gamma_i \quad \text{for } t = 1, \dots, 40 \tag{5}
+```
+
+</div>
 
 ```js
 const vecCumSumGamma = d3.cumsum(vecNormGamma);
@@ -734,8 +758,13 @@ const vecCumSumGamma = d3.cumsum(vecNormGamma);
 
 The zero coupon yield curve&nbsp;${tex`Z_t`} is solved:
 
-<span id="equation-6">${tex.block`Z_t = (1 - S) \, \frac{\Gamma_t}{E_t}
-  \tag{6}`}</span>
+<div id="equation-6">
+
+```tex
+Z_t = (1 - S) \, \frac{\Gamma_t}{E_t} \tag{6}
+```
+
+</div>
 
 ```js
 function computeZ(paramS, vecCumSumGamma, vecE) {
@@ -750,7 +779,13 @@ const vecZ = computeZ(inputS, vecCumSumGamma, vecE);
 Whereupon, the Bond discount rate&nbsp;${tex`B_t`} that forms the Forward
 delivery curve is derived:
 
-<span id="equation-7">${tex.block`B_t = \exp(-Z_t \, E_t) \tag{7}`}</span>
+<div id="equation-7">
+
+```tex
+B_t = \exp(-Z_t \, E_t) \tag{7}
+```
+
+</div>
 
 ```js
 function computeB(vecZ, vecE) {
@@ -766,8 +801,13 @@ The yield due on **A**&nbsp;Bonds is calculated daily and added to staked
 principal, hence the daily yield for each time bucket is calculated
 as&nbsp;${tex`Y_t`}:
 
-<span id="equation-8">${tex.block`Y_t = \exp \left( \frac{Z_t}{365} \right) - 1
-  \tag{8}`}</span>
+<div id="equation-8">
+
+```tex
+Y_t = \exp \left( \frac{Z_t}{365} \right) - 1 \tag{8}
+```
+
+</div>
 
 ```js
 function computeY(vecZ) {
@@ -781,16 +821,24 @@ const vecY = computeY(vecZ);
 
 Hence, any bond stake&nbsp;${tex`A_t`} will increase by&nbsp;${tex`\Delta A_t`}:
 
-<span id="equation-9">${tex.block`\Delta A_t = A_t \, Y_t \tag{9}`}</span>
+<div id="equation-9">
+
+```tex
+\Delta A_t = A_t \, Y_t \tag{9}
+```
+
+</div>
 
 With the total&nbsp;**A** tokens created on a daily basis for Bond inflation
 as&nbsp;${tex`R`}:
 
-<span id="equation-10">${tex.block`R = \sum_{t=1}^{40} \Delta A_t
-  \tag{10}`}</span>
+<div id="equation-10">
 
-<figure id="figure-7" class="u-center">
-<figcaption>Figure&nbsp;7: Example of Bond Market State</figcaption>
+```tex
+R = \sum_{t=1}^{40} \Delta A_t \tag{10}
+```
+
+</div>
 
 ```js
 const yieldData = [];
@@ -849,6 +897,9 @@ const yieldParams = [
   { key: stringC, time: Math.sqrt(paramC) },
 ];
 ```
+
+<figure id="figure-7" class="u-center">
+<figcaption>Figure&nbsp;7: Example of Bond Market State</figcaption>
 
 ```js
 Plot.plot({
@@ -966,7 +1017,7 @@ inflation&nbsp;${tex`{\Delta A \approx Z \, S}`}.
 <figure id="figure-8" class="u-center">
 <figcaption>Figure&nbsp;8: Range of
   <strong>A</strong>&nbsp;Inflation</figcaption>
-${FileAttachment("res/figure-8.webp").image({ alt: "Range of A Inflation" })}
+<img alt="Range of A Inflation" src="res/figure-8.webp">
 </figure>
 
 #### 3.1.2 Governance Weightings
@@ -988,22 +1039,44 @@ of&nbsp;**A**:
 
 1. Initial voting weights for Bonds&nbsp;${tex`v_t`}:
 
-    <span id="equation-11">${tex.block`v_t = Z_t \, S_t \tag{11}`}</span>
+    <div id="equation-11">
+
+    ```tex
+    v_t = Z_t \, S_t \tag{11}
+    ```
+
+    </div>
 
 2. Initial voting weights for LPs&nbsp;${tex`w_t`}:
 
-    <span id="equation-12">${tex.block`w_t = Z_t \, A_{Gt} \tag{12}`}</span>
+    <div id="equation-12">
+
+    ```tex
+    w_t = Z_t \, A_{Gt} \tag{12}
+    ```
+
+    </div>
 
 1. Final voting weights Bonds&nbsp;${tex`V_t`}:
 
-    <span id="equation-13">${tex.block`V_t =
-      \frac{v_t}{\sum_{j=1}^{40} (v_j + 2 w_j)} \tag{13}`}</span>
+    <div id="equation-13">
+
+    ```tex
+    V_t = \frac{v_t}{\sum_{j=1}^{40} (v_j + 2 w_j)} \tag{13}
+    ```
+
+    </div>
 
 2. Final voting weights LPs&nbsp;${tex`W_t`}:
 
-    <span id="equation-14">${tex.block`W_t =
-      \frac{w_t}{\sum_{j=1}^{40} \left( \frac 1 2 v_j + w_j \right)}
-      \tag{14}`}</span>
+    <div id="equation-14">
+
+    ```tex
+    W_t = \frac{w_t}{\sum_{j=1}^{40} \left( \frac 1 2 v_j + w_j \right)}
+      \tag{14}
+    ```
+
+    </div>
 
 #### 3.1.3 Real Carbon Yield
 
@@ -1015,8 +1088,13 @@ expressed as a proportion of outstanding supply of **A**&nbsp;Tokens.
 With&nbsp;${tex`\mu`} as the daily emission factor applied to the Portfolio
 holding spot delivery **C**&nbsp;tokens:
 
-<span id="equation-15">${tex.block`\mu = \frac{A \, (1 - A)}{90}
-  \tag{15}`}</span>
+<div id="equation-15">
+
+```tex
+\mu = \frac{A \, (1 - A)}{90} \tag{15}
+```
+
+</div>
 
 Carbon Yield is allocated to Bond-holders using&nbsp;(normalising) the _initial
 voting weight_&nbsp;${tex`v_t`} determined in [Equation&nbsp;(11)](#equation-11).
@@ -1033,9 +1111,7 @@ of Carbon.
 
 <figure id="figure-9" class="u-center">
 <figcaption>Figure&nbsp;9: Klima&nbsp;2.0 Portfolio Manager</figcaption>
-${FileAttachment("res/figure-9.svg").image(
-  { alt: "Klima 2.0 Portfolio Manager" },
-)}
+<img alt="Klima 2.0 Portfolio Manager" src="res/figure-9.svg">
 </figure>
 
 #### 3.2.1 Purchase Carbon
@@ -1059,9 +1135,7 @@ stakes between the two token systems.
 
 <figure id="figure-10" class="u-center">
 <figcaption>Figure&nbsp;10: Token Staking Class Structure</figcaption>
-${FileAttachment("res/figure-10.svg").image(
-  { alt: "Token Staking Class Structure" },
-)}
+<img alt="Token Staking Class Structure" src="res/figure-10.svg">
 </figure>
 
 For a Carbon class quantity to be sold to the&nbsp;AAM, it must have a strictly
@@ -1088,8 +1162,13 @@ In order to determine the present-value quantity of Carbon, ${tex`\bar C_i`}, we
 apply the discount curve from [Equation&nbsp;(7)](#equation-7) to the liquidity
 schedule and sum the discounted holdings:
 
-<span id="equation-16">${tex.block`\bar C_i = C_{i0} +
-  \sum_{t=1}^{40} B_t \, C_{it} \tag{16}`}</span>
+<div id="equation-16">
+
+```tex
+\bar C_i = C_{i0} + \sum_{t=1}^{40} B_t \, C_{it} \tag{16}
+```
+
+</div>
 
 ```js
 const vecCi = constAreaLinear(vecE, 1 - inputCi0, inputLiqShape, 0.01);
@@ -1173,8 +1252,13 @@ const inputLiqShape = view(Inputs.range([-1, 1], {
 Similarly, taking&nbsp;${tex`\Delta C_{it}`} as the quantity of
 Carbon&nbsp;${tex`i`} to be sold with a specific maturity index&nbsp;${tex`t`}:
 
-<span id="equation-17">${tex.block`\Delta \bar C_i = \Delta C_{i0} +
-  \sum_{t=1}^{40} B_t \, \Delta C_{it} \tag{17}`}</span>
+<div id="equation-17">
+
+```tex
+\Delta \bar C_i = \Delta C_{i0} + \sum_{t=1}^{40} B_t \, \Delta C_{it} \tag{17}
+```
+
+</div>
 
 ```js
 const paramMaturityIdx = 4 * inputEt;
@@ -1289,15 +1373,26 @@ respective pool balance, the amount of **A**&nbsp;tokens issued to pay for
 Carbon, ${tex`\Delta A`}, expressed as a proportion of current supply, is
 determined as:
 
-<span id="equation-18">${tex.block`\ln(1 + \Delta A) =
+<div id="equation-18">
+
+```tex
+\ln(1 + \Delta A) =
   \left( A_i - \frac{A_i^2 \, (1 - G_i)^2}{2} \right) \ln(1 + \Delta \bar C_i)
-  \tag{18}`}</span>
+  \tag{18}
+```
+
+</div>
 
 Denoting the expression on the right hand side of
 [Equation&nbsp;(18)](#equation-18) as&nbsp;${tex`\mathsf{RHS}`}:
 
-<span id="equation-19">${tex.block`\Delta A = \exp(\mathsf{RHS}) − 1
-  \tag{19}`}</span>
+<div id="equation-19">
+
+```tex
+\Delta A = \exp(\mathsf{RHS}) − 1 \tag{19}
+```
+
+</div>
 
 ```js
 function computeDeltaA(Ai, Gi, deltaCi) {
@@ -1494,10 +1589,16 @@ discounting, to be sold for any Carbon class that has a strictly positive
 **A**&nbsp;stake&nbsp;${tex`A_\emptyset`}, together with
 **G**&nbsp;stake&nbsp;${tex`G_\emptyset`}:
 
-<span id="equation-20">${tex.block`\Delta A =
+<div id="equation-20">
+
+```tex
+\Delta A =
   \frac{\Delta \bar C_\emptyset}{1 + \Delta \bar C_\emptyset} \, 
   \left( A_\emptyset - \frac{A_\emptyset^2 (1 - G_\emptyset)^2}{2} \right)^2
-  \tag{20}`}</span>
+  \tag{20}
+```
+
+</div>
 
 ```js
 function computeZeroCarbonDeltaA(Ai, Gi, deltaCnull) {
@@ -1677,15 +1778,25 @@ For retiring Carbon that is _weighted_, that is there is a strictly positive
 the Carbon class offset of their choice&nbsp;${tex`C_i`} but the available pool
 is only the liquid balance, namely the element&nbsp;${tex`C_{i0}`}:
 
-<span id="equation-21">${tex.block`\ln(1 + \Delta C_i) =
-  \frac{-\ln(1 + \Delta A)}{A_i + \frac 1 2 A_i^2 \, (1 - G_i)^2}
-  \tag{21}`}</span>
+<div id="equation-21">
+
+```tex
+\ln(1 + \Delta C_i) =
+  \frac{-\ln(1 + \Delta A)}{A_i + \frac 1 2 A_i^2 \, (1 - G_i)^2} \tag{21}
+```
+
+</div>
 
 As before denoting the expression on the right hand side of
 [Equation&nbsp;(21)](#equation-21) as&nbsp;${tex`\mathsf{RHS}`}:
 
-<span id="equation-22">${tex.block`\Delta C_i = \exp(\mathsf{RHS}) - 1
-  \tag{22}`}</span>
+<div id="equation-22">
+
+```tex
+\Delta C_i = \exp(\mathsf{RHS}) - 1 \tag{22}
+```
+
+</div>
 
 ```js
 function computeDeltaCi(Ai, Gi, deltaA) {
@@ -1876,8 +1987,6 @@ Plot.plot({
 })
 ```
 
-</figure>
-
 ```js
 const inputDeltaCinitial = view(Inputs.range([0.001, 1], {
   label: tex`\Delta C \text{ (carbon sold by AAM at liquidation)}`,
@@ -1886,14 +1995,14 @@ const inputDeltaCinitial = view(Inputs.range([0.001, 1], {
 }));
 ```
 
+</figure>
+
 [Figure&nbsp;17](#figure-17) shows the component `Spread' contributions on a
 Carbon sale and purchase of offset round trip.
 
 <figure id="figure-17" class="u-center">
 <figcaption>Figure&nbsp;17: Carbon ‘Spread’ Components</figcaption>
-${FileAttachment("res/figure-17.webp").image(
-  { alt: "Carbon ‘Spread’ Components" },
-)}
+<img alt="Carbon ‘Spread’ Components" src="res/figure-17.webp">
 </figure>
 
 ### 3.3 Liquidity Markets
@@ -1903,9 +2012,7 @@ price&nbsp;(and time) staking for providing liquidity.
 
 <figure id="figure-18" class="u-center">
 <figcaption>Figure&nbsp;18: Token Liquidity and Pricing Structure</figcaption>
-${FileAttachment("res/figure-18.svg").image(
-  { alt: "Token Liquidity and Pricing Structure" },
-)}
+<img alt="Token Liquidity and Pricing Structure" src="res/figure-18.svg">
 </figure>
 
 There are two core liquidity pools:
@@ -1947,8 +2054,13 @@ or idiosyncratic risk in the carbon-class and this allows us to calculate a
 Portfolio beta&nbsp;${tex`\beta`} from the implied betas of each carbon
 class&nbsp;${tex`i`}.
 
-<span id="equation-23">${tex.block`\beta =
-  \sqrt{\sum_{i=1}^n A_i - A_i \, (1 - G_i)^2} \tag{23}`}</span>
+<div id="equation-23">
+
+```tex
+\beta = \sqrt{\sum_{i=1}^n A_i - A_i \, (1 - G_i)^2} \tag{23}
+```
+
+</div>
 
 ```js
 function computeBeta(vecAi, vecGi) {
@@ -2226,7 +2338,7 @@ premium for the liquidity pools accordingly.
 <figure id="figure-21" class="u-center">
 <figcaption>Figure&nbsp;21: <strong>A</strong>&nbsp;Token Flow
   Structure</figcaption>
-${FileAttachment("res/figure-21.svg").image({ alt: "A Token Flow Structure" })}
+<img alt="A Token Flow Structure" src="res/figure-21.svg">
 </figure>
 
 #### 3.3.4 Share of Risky Premium
@@ -2253,8 +2365,13 @@ outstanding supply of&nbsp;**A**.
 
 The allocation to **G**&nbsp;token staking, ${tex`\lambda_{GG}`}:
 
-<span id="equation-24">${tex.block`\lambda_{GG} =
-  \frac{1 - A_Q}{1 + \left( \frac{G_i}{G_G} \right)^2} \tag{24}`}</span>
+<div id="equation-24">
+
+```tex
+\lambda_{GG} = \frac{1 - A_Q}{1 + \left( \frac{G_i}{G_G} \right)^2} \tag{24}
+```
+
+</div>
 
 ```js
 function computeLambdaGG(AQ, Gi, GG) {
@@ -2345,8 +2462,13 @@ particularly if&nbsp;${tex`G = 0`}, ${tex`\beta = 0`}.
 
 The residual share, ${tex`1 - λ_{GG}`}, is split between the liquidity pools:
 
-<span id="equation-25">${tex.block`\lambda_G = \frac{2 A_G}{2 A_G + A_Q \sqrt 2}
-  \tag{25}`}</span>
+<div id="equation-25">
+
+```tex
+\lambda_G = \frac{2 A_G}{2 A_G + A_Q \sqrt 2} \tag{25}
+```
+
+</div>
 
 ```js
 function computeLambdaG(AQ, AG) {
@@ -2356,7 +2478,13 @@ function computeLambdaG(AQ, AG) {
 
 For completeness:
 
-<span id="equation-26">${tex.block`\lambda_Q = 1 - \lambda_G \tag{26}`}</span>
+<div id="equation-26">
+
+```tex
+\lambda_Q = 1 - \lambda_G \tag{26}
+```
+
+</div>
 
 ```js
 function computeLambdaQ(AQ, AG) {
@@ -2465,19 +2593,33 @@ display(plotLambdaGQ);
 For&nbsp;${tex`\lambda_{GG}`}, ${tex`\lambda_G`}, ${tex`\lambda_Q`} we
 apply&nbsp;${tex`\beta`}:
 
-<span id="equation-27">${tex.block`\Lambda_X = \lambda_X \, \beta, \quad
-  \text{for } X \in \{GG, G, Q\} \tag{27}`}</span>
+<div id="equation-27">
+
+```tex
+\Lambda_X = \lambda_X \, \beta, \quad \text{for } X \in \{GG, G, Q\} \tag{27}
+```
+
+</div>
 
 Taking&nbsp;${tex`b`} as a discount parameter:
 
-<span id="equation-28">${tex.block`b =
-  \frac{\sum_1^{40} Z_t \, S_t \, B_t}{\sum_1^{40} Z_t \, S_t }
-  \tag{28}`}</span>
+<div id="equation-28">
+
+```tex
+b = \frac{\sum_1^{40} Z_t \, S_t \, B_t}{\sum_1^{40} Z_t \, S_t } \tag{28}
+```
+
+</div>
 
 The total Risky Yield tokens&nbsp;${tex`R_\lambda`}:
 
-<span id="equation-29">${tex.block`R_\lambda = b \, R \,
-  (\Lambda_3 + \Lambda_4 + \Lambda_5) \tag{29}`}</span>
+<div id="equation-29">
+
+```tex
+R_\lambda = b \, R \, (\Lambda_3 + \Lambda_4 + \Lambda_5) \tag{29}
+```
+
+</div>
 
 The allocations of&nbsp;${tex`R_\lambda`} are pro-rata
 to&nbsp;${tex`\Lambda_3`}, ${tex`\Lambda_4`}, ${tex`\Lambda_5`} and thereafter:
@@ -2489,11 +2631,21 @@ to&nbsp;${tex`\Lambda_3`}, ${tex`\Lambda_4`}, ${tex`\Lambda_5`} and thereafter:
 weighting&nbsp;${tex`G_t`}, ${tex`Q_t`} depending on their time
 bucket&nbsp;${tex`t`}:
 
-    <span id="equation-30">${tex.block`G_t =
-      \frac{Z_t \, L_{Gt} \, B_t}{\sum Z_t \, L_{Gt} \, B_t} \tag{30}`}</span>
+    <div id="equation-30">
 
-    <span id="equation-31">${tex.block`Q_t =
-      \frac{Z_t \, L_{Qt} \, B_t}{\sum Z_t \, L_{Qt} \, B_t} \tag{31}`}</span>
+    ```tex
+    G_t = \frac{Z_t \, L_{Gt} \, B_t}{\sum Z_t \, L_{Gt} \, B_t} \tag{30}
+    ```
+
+    </div>
+
+    <div id="equation-31">
+
+    ```tex
+    Q_t = \frac{Z_t \, L_{Qt} \, B_t}{\sum Z_t \, L_{Qt} \, B_t} \tag{31}
+    ```
+
+    </div>
 
     Where&nbsp;${tex`L_{Gt}`}, ${tex`L_{Qt}`} are the proportion of all
     liquidity locked in each time bucket
@@ -2933,7 +3085,7 @@ const stringCiPrice = "$" + paramCiPrice.toLocaleString(
 <figure id="figure-24" class="u-center">
 <figcaption>Figure&nbsp;24: Allocations:
   <strong>KlimaX</strong>&nbsp;Token</figcaption>
-${FileAttachment("res/figure-24.webp").image({ alt: "Allocations: KlimaX Token" })}
+<img alt="Allocations: KlimaX Token" src="res/figure-24.webp">
 </figure>
 
 ### 4.2 Programmatic Incentive Curve
@@ -2946,49 +3098,59 @@ incentives have been released.
 
 Setting&nbsp;${tex`x_0`} from the initial supply parameter:
 
-<span id="equation-32">${tex.block`x_0 = \ln\left( \frac{P_0}{1 - P_0} \right)
-  \tag{32}`}</span>
+<div id="equation-32">
+
+```tex
+x_0 = \ln\left( \frac{P_0}{1 - P_0} \right) \tag{32}
+```
+
+</div>
 
 With ${tex`x_t`} at time point&nbsp;${tex`t \in (0, \infty)`}:
 
-<span id="equation-33">${tex.block`x_t = x_0 \, \left( 1 - \frac t T \right)
-  \tag{33}`}</span>
+<div id="equation-33">
+
+```tex
+x_t = x_0 \, \left( 1 - \frac t T \right) \tag{33}
+```
+
+</div>
 
 Giving supply function ${tex`\operatorname{P}(t)`} as:
 
-<span id="equation-34">${tex.block`\operatorname{P}(t) =
-  \frac{\exp(x_t)}{\exp(x_t) + 1} \tag{34}`}</span>
+<div id="equation-34">
+
+```tex
+\operatorname{P}(t) = \frac{\exp(x_t)}{\exp(x_t) + 1} \tag{34}
+```
+
+</div>
 
 ${tex`P_0`} set at&nbsp;7.0% and&nbsp;${tex`T`} at 24&nbsp;months:
 
 <figure id="figure-25" class="u-center">
 <figcaption>Figure&nbsp;25: Incentive Issuance</figcaption>
-${FileAttachment("res/figure-25.webp").image({ alt: "Incentive Issuance" })}
+<img alt="Incentive Issuance" src="res/figure-25.webp">
 </figure>
 
 <figure id="figure-26" class="u-center">
 <figcaption>Figure&nbsp;26: <strong>KlimaX</strong>&nbsp;Token Supply Over
   Time</figcaption>
-${FileAttachment("res/figure-26a.webp").image(
-  { alt: "KlimaX Token Supply Over Time: Circulating Supply (Stacked)" },
-)}
-${FileAttachment("res/figure-26b.webp").image(
-  { alt: "KlimaX Token Supply Over Time: Total Supply (Stacked)" },
-)}
-${FileAttachment("res/figure-26c.webp").image(
-  { alt: "KlimaX Token Supply Over Time: Total Supply (Unstacked)" },
-)}
+<img alt="KlimaX Token Supply Over Time: Circulating Supply (Stacked)"
+     src="res/figure-26a.webp">
+<img alt="KlimaX Token Supply Over Time: Total Supply (Stacked)"
+     src="res/figure-26b.webp">
+<img alt="KlimaX Token Supply Over Time: Total Supply (Unstacked)"
+     src="res/figure-26c.webp">
 </figure>
 
 <figure id="figure-27" class="u-center">
 <figcaption>Figure&nbsp;27: <strong>KlimaX</strong>&nbsp;Token Supply Risk
   Metrics</figcaption>
-${FileAttachment("res/figure-27a.webp").image(
-  { alt: "KlimaX Token Supply Risk Metrics: Total Supply Differential" },
-)}
-${FileAttachment("res/figure-27b.webp").image(
-  { alt: "KlimaX Token Supply Risk Metrics: Utility Incentive Yield" },
-)}
+<img alt="KlimaX Token Supply Risk Metrics: Total Supply Differential"
+     src="res/figure-27a.webp">
+<img alt="KlimaX Token Supply Risk Metrics: Utility Incentive Yield"
+     src="res/figure-27b.webp">
 </figure>
 
 ### 4.3 Incentive Allocations
@@ -2996,9 +3158,7 @@ ${FileAttachment("res/figure-27b.webp").image(
 <figure id="figure-28" class="u-center">
 <figcaption>Figure&nbsp;28: <strong>G</strong>&nbsp;Token Incentive Distribution
   Structure</figcaption>
-${FileAttachment("res/figure-28.svg").image(
-  { alt: "G Token Incentive Distribution Structure" },
-)}
+<img alt="G Token Incentive Distribution Structure" src="res/figure-28.svg">
 </figure>
 
 The **relative utilisation** measurement factor&nbsp;${tex`\upsilon`} is
@@ -3015,8 +3175,13 @@ circulating supply, ${tex`L \in (0, 1]`}.
 
 Where ${tex`\upsilon = 0`} if ${tex`G + L = 0`}, otherwise:
 
-<span id="equation-35">${tex.block`\upsilon =
-  \left( \frac{2 G L}{G^2 + L^2} \right)^2 \tag{35}`}</span>
+<div id="equation-35">
+
+```tex
+\upsilon = \left( \frac{2 G L}{G^2 + L^2} \right)^2 \tag{35}
+```
+
+</div>
 
 ```js
 function computeUpsilon(G, L) {
@@ -3094,8 +3259,13 @@ Plot.plot({
 The **absolute utilisation** parameter&nbsp;${tex`\eta`} is defined
 as&nbsp;${tex`\eta = 0`} if ${tex`G + L = 0`}, otherwise:
 
-<span id="equation-36">${tex.block`\eta = \frac{1}{1 - \ln(G + L)}
-  \tag{36}`}</span>
+<div id="equation-36">
+
+```tex
+\eta = \frac{1}{1 - \ln(G + L)} \tag{36}
+```
+
+</div>
 
 ```js
 function computeEta(G, L) {
@@ -3174,7 +3344,13 @@ Incentives&nbsp;${tex`I`} are allocated as follows:
 The allocation to the Treasury&nbsp;${tex`I_T`} is the imbalance generated
 from&nbsp;${tex`\upsilon`}:
 
-<span id="equation-37">${tex.block`I_T = 1 - \upsilon \, \eta \tag{37}`}</span>
+<div id="equation-37">
+
+```tex
+I_T = 1 - \upsilon \, \eta \tag{37}
+```
+
+</div>
 
 ```js
 function computeTreasury(G, L) {
@@ -3200,13 +3376,24 @@ The residual post Treasury allocation is shared four ways within 2&nbsp;buckets:
 
     1. **A**&nbsp;Bonds, ${tex`I_S`}:
 
-        <span id="equation-38">${tex.block`I_S = S \, \frac{L^2}{G^2 + L^2}
-          \tag{38}`}</span>
+        <div id="equation-38">
+
+        ```tex
+        I_S = S \, \frac{L^2}{G^2 + L^2} \tag{38}
+        ```
+
+        </div>
+
 
     2. **G**&nbsp;Staking, ${tex`I_G`}:
 
-        <span id="equation-39">${tex.block`I_G = (1 − S) \,
-          \frac{L^2}{G^2 + L^2} \tag{39}`}</span>
+        <div id="equation-39">
+
+        ```tex
+        I_G = (1 − S) \, \frac{L^2}{G^2 + L^2} \tag{39}
+        ```
+
+        </div>
 
 ```js
 function computeIBonds(G, L, S) {
@@ -3236,15 +3423,25 @@ function computeIStaking(G, L, S) {
 
     3. <span class="u-overline">**AG**</span>&nbsp;Pool&nbsp;${tex`I_{AG}`}:
 
-        <span id="equation-40">${tex.block`I_{AG} =
-          \frac{\lambda_G}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
-          \tag{40}`}</span>
+        <div id="equation-40">
+
+        ```tex
+        I_{AG} = \frac{\lambda_G}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
+          \tag{40}
+        ```
+
+        </div>
 
     4. <span class="u-overline">**AQ**</span>&nbsp;Pool&nbsp;${tex`I_{AQ}`}:
 
-        <span id="equation-41">${tex.block`I_{AQ} =
-          \frac{\lambda_Q}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
-          \tag{41}`}</span>
+        <div id="equation-41">
+
+        ```tex
+        I_{AQ} = \frac{\lambda_Q}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
+          \tag{41}
+        ```
+
+        </div>
 
 ```js
 function computeIPool(G, L, weight) {

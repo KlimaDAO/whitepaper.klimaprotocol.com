@@ -3810,14 +3810,12 @@ Plot.plot({
       y: getCirculatingStacked,
       stroke: getCohortCirculatingStacked,
       strokeWidth : 2,
-      curve: "step-after",
     }),
     Plot.areaY(supplyData, {
       x: "x",
       y: getCirculatingUnstacked,
       fill: getCohortCirculatingUnstacked,
       fillOpacity: 0.5,
-      curve: "step-after",
     }),
   ]
 })
@@ -3837,14 +3835,12 @@ Plot.plot({
       y: getTotalStacked,
       stroke: getCohortTotalStacked,
       strokeWidth : 2,
-      curve: "step-after",
     }),
     Plot.areaY(supplyData, {
       x: "x",
       y: getTotalUnstacked,
       fill: getCohortTotalUnstacked,
       fillOpacity: 0.5,
-      curve: "step-after",
     }),
   ]
 })
@@ -3865,7 +3861,6 @@ Plot.plot({
       y: getTotalUnstacked,
       stroke: getCohortTotalUnstacked,
       strokeWidth : 2,
-      curve: "step-after",
     }),
     Plot.areaY(supplyData, {
       x: "x",
@@ -3873,7 +3868,6 @@ Plot.plot({
       y2: getTotalUnstacked,
       fill: getCohortTotalUnstacked,
       fillOpacity: 0.2,
-      curve: "step-after",
     }),
   ]
 })
@@ -3899,7 +3893,6 @@ Plot.plot({
       x: "x",
       y: getDiffUnstacked,
       fill: getCohortDiffUnstacked,
-      curve: "step-after",
     }),
   ]
 })
@@ -3928,7 +3921,6 @@ Plot.plot({
       y: getAPY,
       stroke: "key",
       strokeWidth : 2,
-      curve: "step-after",
     }),
     Plot.areaY(supplyData, {
       x: "x",
@@ -3936,15 +3928,13 @@ Plot.plot({
       y2: getAPY,
       fill: "key",
       fillOpacity: 0.2,
-      curve: "step-after",
     }),
     Plot.lineY(supplyData, {
       x: "x",
       y: getAPR,
       stroke: "key",
       strokeWidth : 2,
-      strokeDasharray: [1, 3],
-      curve: "step-after",
+      strokeDasharray: 4,
     }),
   ]
 })

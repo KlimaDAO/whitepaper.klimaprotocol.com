@@ -1015,7 +1015,7 @@ maturity over the staking range to provide an approximation of
 inflation&nbsp;${tex`{\Delta A \approx Z \, S}`}.
 
 ```js
-export function computeApproxDeltaA(paramS, paramE) {
+function computeApproxDeltaA(paramS, paramE) {
   return paramS * (1 - paramS) / paramE;
 }
 ```

@@ -811,7 +811,7 @@ Y_t = \exp \left( \frac{Z_t}{365} \right) - 1 \tag{8}
 
 ```js
 function computeY(vecZ) {
-    return vecZ.map(z => Math.expm1(z / 365));
+  return vecZ.map(z => Math.expm1(z / 365));
 }
 ```
 
@@ -1014,10 +1014,64 @@ respect to staking and duration, [Figure&nbsp;8](#figure-8) assumes a single
 maturity over the staking range to provide an approximation of
 inflation&nbsp;${tex`{\Delta A \approx Z \, S}`}.
 
+```js
+export function computeApproxDeltaA(paramS, paramE) {
+  return paramS * (1 - paramS) / paramE;
+}
+```
+
+```js
+const inflationData = [];
+for (let paramS = 0; paramS < 1.01; paramS += 0.1) {
+  for (let paramE = 1; paramE <= 10; paramE++) {
+    inflationData.push({
+      key: "ΔA",
+      e: paramE,
+      s: paramS,
+      value: computeApproxDeltaA(paramS, paramE),
+    });
+  }
+}
+```
+
 <figure id="figure-8" class="u-center">
 <figcaption>Figure&nbsp;8: Range of
   <strong>A</strong>&nbsp;Inflation</figcaption>
-<img alt="Range of A Inflation" src="res/figure-8.webp">
+
+```js
+Plot.plot({
+  caption: html`A Inflation Rate from Bond Yields ${tex`\Delta A`}`,
+  // aspectRatio: 1,
+  color: { legend: true, scheme: "Spectral", type: "sequential", label: "ΔA" },
+  x: { ticks: d3.range(1, 10.1, 1), domain: [10.5, 0.5], label: "Expiry Time E" },
+  y: { ticks: d3.range(0, 1.01, 0.1), domain: [1.05, -0.05], label: "Staking S" },
+  marks: [
+    Plot.frame(),
+    Plot.rect(inflationData, {
+      x1: d => d.e - 0.5,
+      x2: d => d.e + 0.5,
+      y1: d => d.s - 0.05,
+      y2: d => d.s + 0.05,
+      fill: "value",
+    }),
+    Plot.text(inflationData, {
+      x: "e",
+      y: "s",
+      text: d => Number.isNaN(d.value) ? "" : d.value.toLocaleString(
+        "en-GB",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+      ),
+      fill: d => contrastingTextColor(
+        d3.scaleSequential(
+          [0, computeApproxDeltaA(0.5, 1)],
+          d3.interpolateSpectral,
+        )(d.value),
+      ),
+    }),
+  ],
+})
+```
+
 </figure>
 
 #### 3.1.2 Governance Weightings
@@ -1264,7 +1318,7 @@ Carbon&nbsp;${tex`i`} to be sold with a specific maturity index&nbsp;${tex`t`}:
 const paramMaturityIdx = 4 * inputEt;
 
 function computeDeltaCi0(deltaCi, t) {
-  return paramMaturityIdx === 0 ? deltaCi : 0;
+  return t === 0 ? deltaCi : 0;
 }
 
 function computeVecDeltaCi(deltaCi, t) {
@@ -1613,6 +1667,10 @@ function computeTrueDeltaA(Ai, Gi, barCiTonnes, deltaBarCiTonnes) {
     return computeDeltaA(Ai, Gi, deltaBarCi);
   }
 }
+
+function numberOfDigits(x) {
+  return x === 0 ? 1 : (1 + Math.floor(Math.log10(x)));
+}
 ```
 
 ```js
@@ -1921,16 +1979,27 @@ function computeSpread(Ai, Gi, deltaCinitial) {
 by the system where&nbsp;${tex`\varepsilon`} is the proportion retained:
 
 ```js
-const spreadData = [];
+const liquidationData = [];
 for (let paramGi = 0; paramGi < 1.01; paramGi += 0.1) {
-  spreadData.push({
-    key: "spread",
-    ai: 0,
-    gi: paramGi,
-    value: NaN,
-  });
+  liquidationData.push({ key: "deltaa", ai: 0, gi: paramGi, value: NaN });
+  liquidationData.push({ key: "deltac", ai: 0, gi: paramGi, value: NaN });
+  liquidationData.push({ key: "spread", ai: 0, gi: paramGi, value: NaN });
   for (let paramAi = 0.1; paramAi < 1.01; paramAi += 0.1) {
-    spreadData.push({
+    const deltaA = computeDeltaA(paramAi, paramGi, inputDeltaCinitial)
+    liquidationData.push({
+      key: "deltaa",
+      ai: paramAi,
+      gi: paramGi,
+      value: computeDeltaA(paramAi, paramGi, inputDeltaCinitial) /
+              inputDeltaCinitial,
+    });
+    liquidationData.push({
+      key: "deltac",
+      ai: paramAi,
+      gi: paramGi,
+      value: computeDeltaCi(paramAi, paramGi, deltaA) / inputDeltaCinitial,
+    });
+    liquidationData.push({
       key: "spread",
       ai: paramAi,
       gi: paramGi,
@@ -1938,7 +2007,9 @@ for (let paramGi = 0; paramGi < 1.01; paramGi += 0.1) {
     });
   }
 }
-const getSpread = d => d.key === "spread" ? d.value : NaN;
+const getLiqDeltaA = d => d.key === "deltaa" ? d.value : NaN;
+const getLiqDeltaCi = d => d.key === "deltac" ? d.value : NaN;
+const getLiqSpread = d => d.key === "spread" ? d.value : NaN;
 ```
 
 <figure id="figure-16" class="u-center">
@@ -1962,23 +2033,23 @@ Plot.plot({
   y: { ticks: d3.range(0, 1.01, 0.1), domain: [1.05, -0.05], label: "Gᵢ" },
   marks: [
     Plot.frame(),
-    Plot.rect(spreadData, {
+    Plot.rect(liquidationData, {
       x1: d => d.ai - 0.05,
       x2: d => d.ai + 0.05,
       y1: d => d.gi - 0.05,
       y2: d => d.gi + 0.05,
-      fill: getSpread,
+      fill: getLiqSpread,
     }),
-    Plot.text(spreadData, {
+    Plot.text(liquidationData, {
       x: "ai",
       y: "gi",
-      text: d => Number.isNaN(getSpread(d)) ? "" : d.value.toLocaleString(
+      text: d => Number.isNaN(getLiqSpread(d)) ? "" : d.value.toLocaleString(
         "en-GB",
         { minimumFractionDigits: 2, maximumFractionDigits: 2 },
       ),
       fill: d => contrastingTextColor(
         d3.scaleSequential(
-          [0, computeSpread(1, 0, inputDeltaA)],
+          [0, computeSpread(1, 0, inputDeltaCinitial)],
           d3.interpolateSpectral,
         )(d.value),
       ),
@@ -1997,12 +2068,106 @@ const inputDeltaCinitial = view(Inputs.range([0.001, 1], {
 
 </figure>
 
-[Figure&nbsp;17](#figure-17) shows the component `Spread' contributions on a
+[Figure&nbsp;17](#figure-17) shows the component 'Spread' contributions on a
 Carbon sale and purchase of offset round trip.
 
 <figure id="figure-17" class="u-center">
 <figcaption>Figure&nbsp;17: Carbon ‘Spread’ Components</figcaption>
-<img alt="Carbon ‘Spread’ Components" src="res/figure-17.webp">
+
+```js
+Plot.plot({
+  caption: html`Heatmap of Carbon Spread Component ${tex`\Delta A`} with an
+          Initial ${tex`\Delta C = ${(100 * inputDeltaCinitial).toLocaleString(
+            "en-GB",
+            { minimumFractionDigits: 1, maximumFractionDigits: 1 },
+          )} \%`}`,
+  color: {
+    legend: true,
+    scheme: "Spectral",
+    domain: [0, 1],
+    type: "sequential",
+    label: "Carbon Spread Component ΔA",
+  },
+  x: { ticks: d3.range(0, 1.01, 0.1), label: "Aᵢ" },
+  y: { ticks: d3.range(0, 1.01, 0.1), domain: [1.05, -0.05], label: "Gᵢ" },
+  marks: [
+    Plot.frame(),
+    Plot.rect(liquidationData, {
+      x1: d => d.ai - 0.05,
+      x2: d => d.ai + 0.05,
+      y1: d => d.gi - 0.05,
+      y2: d => d.gi + 0.05,
+      fill: getLiqDeltaA,
+    }),
+    Plot.text(liquidationData, {
+      x: "ai",
+      y: "gi",
+      text: d => Number.isNaN(getLiqDeltaA(d)) ? "" : d.value.toLocaleString(
+        "en-GB",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+      ),
+      fill: d => contrastingTextColor(d3.interpolateSpectral(d.value)),
+    }),
+  ],
+})
+```
+
+```js
+Plot.plot({
+  caption: html`Heatmap of Carbon Spread Component ${tex`\Delta C`} with an
+          Initial ${tex`\Delta C = ${(100 * inputDeltaCinitial).toLocaleString(
+            "en-GB",
+            { minimumFractionDigits: 1, maximumFractionDigits: 1 },
+          )} \%`}`,
+  color: {
+    legend: true,
+    scheme: "Greys",
+    domain: [
+      -1,
+      computeDeltaCi(
+        1,
+        0,
+        computeDeltaA(1, 0, inputDeltaCinitial) / inputDeltaCinitial,
+      ),
+    ],
+    label: "Carbon Spread Component ΔC",
+  },
+  x: { ticks: d3.range(0, 1.01, 0.1), label: "Aᵢ" },
+  y: { ticks: d3.range(0, 1.01, 0.1), domain: [1.05, -0.05], label: "Gᵢ" },
+  marks: [
+    Plot.frame(),
+    Plot.rect(liquidationData, {
+      x1: d => d.ai - 0.05,
+      x2: d => d.ai + 0.05,
+      y1: d => d.gi - 0.05,
+      y2: d => d.gi + 0.05,
+      fill: getLiqDeltaCi,
+    }),
+    Plot.text(liquidationData, {
+      x: "ai",
+      y: "gi",
+      text: d => Number.isNaN(getLiqDeltaCi(d)) ? "" : d.value.toLocaleString(
+        "en-GB",
+        { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+      ),
+      fill: d => contrastingTextColor(
+        d3.scaleSequential(
+          [
+            -1,
+            computeDeltaCi(
+              1,
+              0,
+              computeDeltaA(1, 0, inputDeltaCinitial) / inputDeltaCinitial,
+            ),
+          ],
+          d3.interpolateGreys,
+        )(d.value),
+      ),
+    }),
+  ],
+})
+```
+
 </figure>
 
 ### 3.3 Liquidity Markets
@@ -2685,10 +2850,6 @@ class&nbsp;${tex`i`} purchased by the AAM.
 | **Unit price**    | ${stringAPrice}               | ${stringBarCiPrice}                                 |
 
 ```js
-function numberOfDigits(x) {
-  return x === 0 ? 1 : (1 + Math.floor(Math.log10(x)));
-}
-
 function piecewiseLogTransform(xTran = 1) {
   return x => x > xTran ? Math.log(x) : x - xTran + Math.log(xTran);
 }
@@ -3045,7 +3206,7 @@ const stringCiPrice = "$" + paramCiPrice.toLocaleString(
       <td>Logistic Vesting 48&nbsp;months
     <tr>
       <td>Ecosystem Grant
-      <td class="u-center">5.0%
+      <td class="u-center">5%
       <td class="u-center">5
       <td>Logistic Vesting 48&nbsp;months
     <tr class="u-gray">
@@ -3083,10 +3244,66 @@ const stringCiPrice = "$" + paramCiPrice.toLocaleString(
   </tbody>
 </table>
 
+```js
+const allocInitGData = [];
+for (let i = 0; i < 100.01; i += 0.25) {
+  if (i < 2.51) {
+    allocInitGData.push({ key: "01X", value: i });
+  }
+  if (2.49 < i && i < 5.51) {
+    allocInitGData.push({ key: "pKlima Holders", value: i });
+  }
+  if (5.49 < i && i < 10.01) {
+    allocInitGData.push({ key: "DAO / Treasury", value: i });
+  }
+  if (9.99 < i && i < 15.01) {
+    allocInitGData.push({ key: "Ecosystem Grant", value: i });
+  }
+  if (14.99 < i && i < 20.01) {
+    allocInitGData.push({ key: "Product design", value: i });
+  }
+  if (19.99 < i && i < 60.01) {
+    allocInitGData.push({ key: "Klima Holders", value: i });
+  }
+  if (59.99 < i) {
+    allocInitGData.push({ key: "Incentives", value: i });
+  }
+}
+const longitudeScale = d3.scaleLinear([180, -180]);
+const getCenter = d =>
+        [1.25, 4, 7.75, 12.5, 17.5, 40, 80].includes(d.value) ? d.value : NaN;
+
+const cohortsDomain = [
+      "Incentives",
+      "Klima Holders",
+      "Product design",
+      "Ecosystem Grant",
+      "DAO / Treasury",
+      "pKlima Holders",
+      "01X",
+    ];
+```
+
 <figure id="figure-24" class="u-center">
-<figcaption>Figure&nbsp;24: Allocations:
-  <strong>KlimaX</strong>&nbsp;Token</figcaption>
-<img alt="Allocations: KlimaX Token" src="res/figure-24.webp">
+<figcaption>Figure&nbsp;24: <strong>KlimaX</strong>&nbsp;Token
+  Allocations</figcaption>
+
+```js
+Plot.plot({
+  projection: { type: "azimuthal-equidistant", rotate: [0, -90], scale: 2 },
+  color: { legend: true, range: d3.schemeCategory10, domain: cohortsDomain },
+  marks: [
+    Plot.area(allocInitGData, {
+      x1: ({ value }) => longitudeScale(value / 100),
+      y1: -20,
+      x2: ({ value }) => longitudeScale(value / 100),
+      y2: -70,
+      fill: "key",
+    }),
+  ]
+})
+```
+
 </figure>
 
 ### 4.2 Programmatic Incentive Curve
@@ -3129,29 +3346,610 @@ Giving supply function ${tex`\operatorname{P}(t)`} as:
 
 ${tex`P_0`} set at&nbsp;7.0% and&nbsp;${tex`T`} at 24&nbsp;months:
 
+```js
+function computeP(t, P0, T) {
+  const x0 = Math.log(P0 / (1 - P0));
+  const xt = x0 * (1 - t / T);
+  const exp = Math.exp(xt);
+  return exp / (exp + 1);
+}
+
+function computeDerivP(t, P0, T) {
+  const x0 = Math.log(P0 / (1 - P0));
+  const xt = x0 * (1 - t / T);
+  const exp = Math.exp(xt);
+  const P = exp / (1 + exp);
+  return -(x0 / T) * P * (1 - P);
+}
+
+function getVesting(vecVesting, t, tStart, tEnd) {
+  if (t < tStart)
+    return 0;
+  else if (t < tEnd) {
+    return vecVesting[t - tStart];
+  } else {
+    return vecVesting[tEnd - tStart - 1];
+  }
+}
+```
+
+```js
+const tVestStart = 3;
+const tVestEnd = 2 * inputT;
+const tVesting = d3.range(tVestStart, tVestEnd);
+const vecVestingDeriv = normalize(tVesting.map(t =>
+  computeDerivP(t, inputP0, inputT)
+));
+const vecVesting = d3.cumsum(vecVestingDeriv);
+
+let paramVestingPrevious = 0;
+const vecSupplyIncentives = [];
+const vecSupplyCirculating = [];
+const supplyData = [];
+for (let t = 0; t <= 72; t++) {
+  const paramP = computeP(t, inputP0, inputT);
+  const paramDerivP = computeDerivP(t, inputP0, inputT);
+  const paramVesting = getVesting(vecVesting, t, tVestStart, tVestEnd);
+  const paramVestingDiff = paramVesting - paramVestingPrevious;
+  paramVestingPrevious = paramVesting;
+
+  const supply01X = 2.5;
+  const supplyPKlima = 3 * paramVesting;
+  const supplyTreasury = 4.5;
+  const supplyGrant = 5 * paramVesting;
+  const supplyProduct = 5 * paramVesting;
+  const supplyKlima = 40 * paramVesting;
+  const supplyIncentives = 40 * paramP;
+  vecSupplyIncentives.push(supplyIncentives);
+
+  const supply01XStacked = supply01X;
+  const supplyPKlimaStacked = supplyPKlima + supply01XStacked;
+  const supplyTreasuryStacked = supplyTreasury + supplyPKlimaStacked;
+  const supplyGrantStacked = supplyGrant + supplyTreasuryStacked;
+  const supplyProductStacked = supplyProduct + supplyGrantStacked;
+  const supplyKlimaStacked = supplyKlima + supplyProductStacked;
+  const supplyIncentivesStacked = supplyIncentives + supplyKlimaStacked;
+  const supplyCirculating = supplyIncentivesStacked / 100;
+  vecSupplyCirculating.push(supplyIncentivesStacked);
+
+  if (t <= 60) {
+    const diffIncentives = 40 * paramDerivP;
+    const diffKlima = 40 * paramVestingDiff;
+    const diffProduct = 5 * paramVestingDiff;
+    const diffGrant = 5 * paramVestingDiff;
+    const diffPKlima = 3 * paramVestingDiff;
+    const diffTreasury = t === 0 ? 4.5: 0;
+    const diff01X = t === 0 ? 2.5 : 0;
+
+    const diffIncentivesStacked = diffIncentives;
+    const diffKlimaStacked = diffKlima + diffIncentivesStacked;
+    const diffProductStacked = diffProduct + diffKlimaStacked;
+    const diffGrantStacked = diffGrant + diffProductStacked;
+    const diffPKlimaStacked = diffPKlima + diffGrantStacked;
+    const diffTreasuryStacked = diffTreasury + diffPKlimaStacked;
+    const diff01XStacked = diff01X + diffTreasuryStacked;
+
+    supplyData.push({
+      key: "Proportion of Supply",
+      x: t,
+      y: 100 * paramP,
+    });
+    supplyData.push({
+      key: "Rate of Change",
+      x: t,
+      y: 100 * paramDerivP,
+    });
+
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "01X",
+      x: t,
+      y: supply01XStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "pKlima Holders",
+      x: t,
+      y: supplyPKlimaStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "DAO / Treasury",
+      x: t,
+      y: supplyTreasuryStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "Ecosystem Grant",
+      x: t,
+      y: supplyGrantStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "Product design",
+      x: t,
+      y: supplyProductStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "Klima Holders",
+      x: t,
+      y: supplyKlimaStacked / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Stacked)",
+      cohort: "Incentives",
+      x: t,
+      y: supplyIncentivesStacked / supplyCirculating,
+    });
+
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "01X",
+      x: t,
+      y: supply01X / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "pKlima Holders",
+      x: t,
+      y: supplyPKlima / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "DAO / Treasury",
+      x: t,
+      y: supplyTreasury / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "Ecosystem Grant",
+      x: t,
+      y: supplyGrant / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "Product design",
+      x: t,
+      y: supplyProduct / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "Klima Holders",
+      x: t,
+      y: supplyKlima / supplyCirculating,
+    });
+    supplyData.push({
+      key: "Circulating Supply (Unstacked)",
+      cohort: "Incentives",
+      x: t,
+      y: supplyIncentives / supplyCirculating,
+    });
+
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "01X",
+      x: t,
+      y: supply01XStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "pKlima Holders",
+      x: t,
+      y: supplyPKlimaStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "DAO / Treasury",
+      x: t,
+      y: supplyTreasuryStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "Ecosystem Grant",
+      x: t,
+      y: supplyGrantStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "Product design",
+      x: t,
+      y: supplyProductStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "Klima Holders",
+      x: t,
+      y: supplyKlimaStacked,
+    });
+    supplyData.push({
+      key: "Total Supply (Stacked)",
+      cohort: "Incentives",
+      x: t,
+      y: supplyIncentivesStacked,
+    });
+
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "01X",
+      x: t,
+      y: supply01X,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "pKlima Holders",
+      x: t,
+      y: supplyPKlima,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "DAO / Treasury",
+      x: t,
+      y: supplyTreasury,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "Ecosystem Grant",
+      x: t,
+      y: supplyGrant,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "Product design",
+      x: t,
+      y: supplyProduct,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "Klima Holders",
+      x: t,
+      y: supplyKlima,
+    });
+    supplyData.push({
+      key: "Total Supply (Unstacked)",
+      cohort: "Incentives",
+      x: t,
+      y: supplyIncentives,
+    });
+
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "Incentives",
+      x: t,
+      y: diffIncentives,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "Klima Holders",
+      x: t,
+      y: diffKlima,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "Product design",
+      x: t,
+      y: diffProduct,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "Ecosystem Grant",
+      x: t,
+      y: diffGrant,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "pKlima Holders",
+      x: t,
+      y: diffPKlima,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "DAO / Treasury",
+      x: t,
+      y: diffTreasury,
+    });
+    supplyData.push({
+      key: "Total Supply Differential (Unstacked)",
+      cohort: "01X",
+      x: t,
+      y: diff01X,
+    });
+  }
+}
+
+const vecNextYearIncentives = vecSupplyIncentives.map((val, t) =>
+  vecSupplyIncentives[t + 12] - val);
+const vecAPY = vecSupplyCirculating.map((val, t) =>
+  100 * (vecSupplyCirculating[t + 12] - val) / val);
+const vecAPR = vecSupplyCirculating.map((val, t) =>
+  100 * (vecSupplyCirculating[t + 12] - vecNextYearIncentives[t] - val) / val);
+
+for (let t = 0; t <= 60; t++) {
+  supplyData.push({ key: "APY", x: t, y: vecAPY[t] });
+  supplyData.push({ key: "APR", x: t, y: vecAPR[t] });
+}
+
+const getLogisticCurve = d => d.key === "Proportion of Supply" ? d.y : NaN;
+const getRateOfChange = d => d.key === "Rate of Change" ? d.y : NaN;
+const getCirculatingStacked = d =>
+        d.key === "Circulating Supply (Stacked)" ? d.y : NaN;
+const getCirculatingUnstacked = d =>
+        d.key === "Circulating Supply (Unstacked)" ? d.y : NaN;
+const getTotalStacked = d => d.key === "Total Supply (Stacked)" ? d.y : NaN;
+const getTotalUnstacked = d => d.key === "Total Supply (Unstacked)" ? d.y : NaN;
+const getDiffUnstacked = d =>
+        d.key === "Total Supply Differential (Unstacked)" ? d.y : NaN;
+const getCohortCirculatingStacked = d =>
+        d.key === "Circulating Supply (Stacked)" ? d.cohort : NaN;
+const getCohortCirculatingUnstacked = d =>
+        d.key === "Circulating Supply (Unstacked)" ? d.cohort : NaN;
+const getCohortTotalStacked = d =>
+        d.key === "Total Supply (Stacked)" ? d.cohort : NaN;
+const getCohortTotalUnstacked = d =>
+        d.key === "Total Supply (Unstacked)" ? d.cohort : NaN;
+const getCohortDiffUnstacked = d =>
+        d.key === "Total Supply Differential (Unstacked)" ? d.cohort : NaN;
+const getAPY = d => d.key === "APY" ? d.y : NaN;
+const getAPR = d => d.key === "APR" ? d.y : NaN;
+
+const domainRateOfChange = [0, d3.max(supplyData, getRateOfChange)];
+const scaleRateOfChange = d3.scaleLinear(domainRateOfChange, [0, 100]);
+const mapScaleRateOfChange = x => x.map(scaleRateOfChange);
+
+const stringP0 = "Initial Issuance P₀ = " + inputP0.toLocaleString(
+  "en-GB",
+  { style: "percent", maximumFractionDigits: 0 },
+);
+const stringT = "Inflection Point Time T = " + inputT.toLocaleString(
+  "en-GB",
+  { maximumFractionDigits: 0 },
+) + " months";
+
+const supplyParams = [
+  { key: stringP0, x: 0.5, y: 100 * inputP0 },
+  { key: stringT, x: inputT, y: 50 },
+];
+```
+
 <figure id="figure-25" class="u-center">
 <figcaption>Figure&nbsp;25: Incentive Issuance</figcaption>
-<img alt="Incentive Issuance" src="res/figure-25.webp">
+
+```js
+Plot.plot({
+  caption: "Logistic Curve",
+  color: {
+    legend: true,
+    range: [5, 7, 0, 2].map(i => d3.schemeCategory10[i]),
+    domain: ["Proportion of Supply", "Rate of Change", stringP0, stringT],
+  },
+  x: { ticks: d3.range(0, 60.1, 12), label: "‘Life’ Span (Months)", grid: true },
+  y: { domain: [0, 100] },
+  insetTop: 16,
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.axisY({ anchor: "left", label: "Proportion of Supply (%)" }),
+    Plot.axisY(scaleRateOfChange.ticks(), {
+      anchor: "right",
+      tickFormat: scaleRateOfChange.tickFormat(),
+      label: "Rate of Change (%/Month)",
+      y: scaleRateOfChange
+    }),
+    Plot.lineY(supplyData, Plot.mapY(mapScaleRateOfChange, {
+      x: "x",
+      y: getRateOfChange,
+      stroke: "key",
+      strokeWidth : 2,
+      strokeDasharray: 4,
+    })),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getLogisticCurve,
+      stroke: "key",
+      strokeWidth : 2,
+    }),
+    Plot.areaY(supplyData, Plot.mapY(mapScaleRateOfChange, {
+      x: "x",
+      y: getRateOfChange,
+      fill: "key",
+      fillOpacity: 0.3,
+    })),
+    Plot.areaY(supplyData, {
+      x: "x",
+      y: getLogisticCurve,
+      fill: "key",
+      fillOpacity: 0.3,
+    }),
+    Plot.ruleX(supplyParams, {
+      x: d => d.key === stringT ? d.x : NaN,
+      y: "y",
+      stroke: "key",
+      strokeWidth : 2,
+      strokeDasharray: 4,
+    }),
+    Plot.dotY(supplyParams, {
+      x: "x",
+      y: "y",
+      r: 5,
+      fill: "key",
+    }),
+  ]
+})
+```
+
 </figure>
+
+```js
+const inputP0 = view(Inputs.range([0.01, 0.5], {
+  label: tex`P_0 \text{ (initial issuance at TGE)}`,
+  step: 0.01,
+  value: 0.07,
+}));
+const inputT = view(Inputs.range([2, 60], {
+  label: tex`T \text{ (inflection point time in months)}`,
+  step: 1,
+  value: 24,
+}));
+```
 
 <figure id="figure-26" class="u-center">
 <figcaption>Figure&nbsp;26: <strong>KlimaX</strong>&nbsp;Token Supply Over
   Time</figcaption>
-<img alt="KlimaX Token Supply Over Time: Circulating Supply (Stacked)"
-     src="res/figure-26a.webp">
-<img alt="KlimaX Token Supply Over Time: Total Supply (Stacked)"
-     src="res/figure-26b.webp">
-<img alt="KlimaX Token Supply Over Time: Total Supply (Unstacked)"
-     src="res/figure-26c.webp">
+
+```js
+Plot.plot({
+  caption: "Cohort: Circulating Supply (Stacked)",
+  color: { legend: true, range: d3.schemeCategory10, domain: cohortsDomain },
+  x: { ticks: d3.range(0, 60.1, 12), label: "Time (Months)", grid: true },
+  y: { domain: [0, 100], label: "Circulating Supply (%)", grid: true },
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getCirculatingStacked,
+      stroke: getCohortCirculatingStacked,
+      strokeWidth : 2,
+      curve: "step-after",
+    }),
+    Plot.areaY(supplyData, {
+      x: "x",
+      y: getCirculatingUnstacked,
+      fill: getCohortCirculatingUnstacked,
+      fillOpacity: 0.5,
+      curve: "step-after",
+    }),
+  ]
+})
+```
+
+```js
+Plot.plot({
+  caption: "Cohort: Total Supply (Stacked)",
+  color: { legend: true, range: d3.schemeCategory10, domain: cohortsDomain },
+  x: { ticks: d3.range(0, 60.1, 12), label: "Time (Months)", grid: true },
+  y: { domain: [0, 100], label: "Total Supply (%)", grid: true },
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getTotalStacked,
+      stroke: getCohortTotalStacked,
+      strokeWidth : 2,
+      curve: "step-after",
+    }),
+    Plot.areaY(supplyData, {
+      x: "x",
+      y: getTotalUnstacked,
+      fill: getCohortTotalUnstacked,
+      fillOpacity: 0.5,
+      curve: "step-after",
+    }),
+  ]
+})
+```
+
+```js
+Plot.plot({
+  caption: "Cohort: Total Supply (Unstacked)",
+  color: { legend: true, range: d3.schemeCategory10, domain: cohortsDomain },
+  x: { ticks: d3.range(0, 60.1, 12), label: "Time (Months)", grid: true },
+  y: { label: "Total Supply (%)", grid: true },
+  insetTop: 16,
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getTotalUnstacked,
+      stroke: getCohortTotalUnstacked,
+      strokeWidth : 2,
+      curve: "step-after",
+    }),
+    Plot.areaY(supplyData, {
+      x: "x",
+      y1: 0,
+      y2: getTotalUnstacked,
+      fill: getCohortTotalUnstacked,
+      fillOpacity: 0.2,
+      curve: "step-after",
+    }),
+  ]
+})
+```
+
 </figure>
 
 <figure id="figure-27" class="u-center">
 <figcaption>Figure&nbsp;27: <strong>KlimaX</strong>&nbsp;Token Supply Risk
   Metrics</figcaption>
-<img alt="KlimaX Token Supply Risk Metrics: Total Supply Differential"
-     src="res/figure-27a.webp">
-<img alt="KlimaX Token Supply Risk Metrics: Utility Incentive Yield"
-     src="res/figure-27b.webp">
+
+```js
+Plot.plot({
+  caption: "Total Supply Differential (Stacked)",
+  color: { legend: true, range: d3.schemeCategory10, domain: cohortsDomain },
+  x: { ticks: d3.range(0, 60.1, 12), label: "Time (Months)", grid: true },
+  y: { label: "Rate of Growth (%/Month)", grid: true },
+  insetTop: 16,
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.rectY(supplyData, {
+      x: "x",
+      y: getDiffUnstacked,
+      fill: getCohortDiffUnstacked,
+      curve: "step-after",
+    }),
+  ]
+})
+```
+
+```js
+Plot.plot({
+  caption: "Utility Incentive Yield",
+  color: {
+    legend: true,
+    range: [9, 8].map(i => d3.schemeCategory10[i]),
+    domain: ["APY", "APR"],
+  },
+  x: { ticks: d3.range(0, 60.1, 12), label: "Time (Months)", grid: true },
+  y: {
+    domain: [0, Math.max(d3.max(vecAPR), d3.max(vecAPY))],
+    label: "Annual Percentage (%)",
+    grid: true,
+  },
+  insetTop: 16,
+  clip: true,
+  marks: [
+    Plot.frame(),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getAPY,
+      stroke: "key",
+      strokeWidth : 2,
+      curve: "step-after",
+    }),
+    Plot.areaY(supplyData, {
+      x: "x",
+      y1: 0,
+      y2: getAPY,
+      fill: "key",
+      fillOpacity: 0.2,
+      curve: "step-after",
+    }),
+    Plot.lineY(supplyData, {
+      x: "x",
+      y: getAPR,
+      stroke: "key",
+      strokeWidth : 2,
+      strokeDasharray: [1, 3],
+      curve: "step-after",
+    }),
+  ]
+})
+```
+
 </figure>
 
 ### 4.3 Incentive Allocations

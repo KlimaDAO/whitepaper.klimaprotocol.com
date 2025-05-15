@@ -3344,7 +3344,14 @@ Giving supply function ${tex`\operatorname{P}(t)`} as:
 
 </div>
 
-${tex`P_0`} set at&nbsp;7.0% and&nbsp;${tex`T`} at 24&nbsp;months:
+${tex`P_0`} set at&nbsp;${
+  inputP0.toLocaleString(
+    "en-GB",
+    { style: "percent", maximumFractionDigits: 0 },
+  )
+} and&nbsp;${tex`T`} at ${
+  inputT.toLocaleString("en-GB", { maximumFractionDigits: 0 })
+}&nbsp;months:
 
 ```js
 function computeP(t, P0, T) {

@@ -4273,7 +4273,7 @@ for (let paramG = 0; paramG < 1.01; paramG += 0.1) {
 
 <figure id="figure-30" class="u-center">
 <figcaption>Figure&nbsp;30: Share of Non-Treasury Incentives&nbsp;${tex`I_S`},
-  ${tex`I_G`}, ${tex`I_{AG}`} and&nbsp;${tex`I_{AQ}}`</figcaption>
+  ${tex`I_G`}, ${tex`I_{AG}`} and&nbsp;${tex`I_{AQ}`}</figcaption>
 
 ```js
 const plotAllocationSQ = Plot.plot({

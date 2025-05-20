@@ -4443,7 +4443,7 @@ for (let paramG = 0; paramG < 1.01; paramG += 0.05) {
 ```
 
 <figure id="figure-31" class="u-center">
-<figcaption>Figure&nbsp;31: Treasury Incentives&nbsp;${tex`I_T`}`</figcaption>
+<figcaption>Figure&nbsp;31: Treasury Incentives&nbsp;${tex`I_T`}</figcaption>
 
 ```js
 Plot.plot({

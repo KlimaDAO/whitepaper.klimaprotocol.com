@@ -2630,7 +2630,7 @@ The residual share, ${tex`1 - λ_{GG}`}, is split between the liquidity pools:
 <div id="equation-25">
 
 ```tex
-\lambda_G = \frac{2 A_G}{2 A_G + A_Q \sqrt 2} \tag{25}
+\lambda_G = (1 - \lambda_{GG}) \frac{2 A_G}{2 A_G + A_Q \sqrt 2} \tag{25}
 ```
 
 </div>
@@ -2646,7 +2646,7 @@ For completeness:
 <div id="equation-26">
 
 ```tex
-\lambda_Q = 1 - \lambda_G \tag{26}
+\lambda_Q = 1 - \lambda_{GG} - \lambda_G \tag{26}
 ```
 
 </div>

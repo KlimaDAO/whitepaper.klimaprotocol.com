@@ -2663,13 +2663,13 @@ for (let paramAG = 0; paramAG < 1.01; paramAG += 0.1) {
   for (let paramAQ = 0; paramAQ < 1.01; paramAQ += 0.1) {
     if (paramAG + paramAQ < 1.01) {
       lambdaGQData.push({
-        key: "𝗔𝗚 Liquidity Pool Share",
+        key: "Relative 𝗔𝗚 Liquidity Pool Share",
         aq: paramAQ,
         ag: paramAG,
         value: computeLambdaG(paramAQ, paramAG),
       });
       lambdaGQData.push({
-        key: "𝗔𝗤 Liquidity Pool Share",
+        key: "Relative 𝗔𝗤 Liquidity Pool Share",
         aq: paramAQ,
         ag: paramAG,
         value: computeLambdaQ(paramAQ, paramAG),
@@ -2685,9 +2685,9 @@ for (let paramAG = 0; paramAG < 1.01; paramAG += 0.1) {
 
 ```js
 const plotLambdaGQ = Plot.plot({
-  caption: html`<span class="u-overline"><strong>AG</strong></span>
+  caption: html`Relative <span class="u-overline"><strong>AG</strong></span>
     and <span class="u-overline"><strong>AQ</strong></span>&nbsp;Liquidity Pools
-    Shares&nbsp;${tex`\lambda_G`} and&nbsp;${tex`\lambda_G`}`,
+    Shares`,
   aspectRatio: 1,
   color: {
     legend: true,

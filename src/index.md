@@ -3041,9 +3041,9 @@ const viewASupply_ = Inputs.range([1e6, 1e10], {
   value: defaultASupply,
   transform: Math.log,
 });
-const viewLiquidTonnes = Inputs.range([1, 1e9], {
+const viewLiquidTonnes = Inputs.range([1e-3, 1e9], {
   label: tex`\text{Liquid tonnes of class } i \text{ in AAM}`,
-  step: 1,
+  step: 1e-3,
   value: defaultLiquidTonnes,
   transform: Math.log,
 });

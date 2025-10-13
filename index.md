@@ -1,4 +1,4 @@
-# White Paper
+# Klima 2.0
 The Dark Sole Enterprise Ltd <ds@darksole.vip>  
 with contributions from the Klima Foundation and Carbonmark
 

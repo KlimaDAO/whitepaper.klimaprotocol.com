@@ -2,7 +2,7 @@
 The Dark Sole Enterprise Ltd <ds@darksole.vip>  
 with contributions from the Klima Foundation and Carbonmark
 
-Oct 13, 2025 (Version 1.45)
+13 Oct 2025 (Version 1.45)
 
 <img src="brand/klimaprotocol.svg" style="width:50.0%"
 alt="Klima Protocol Logo." data-fig-align="center" />

@@ -13,7 +13,7 @@ This document represents original work by dark_sole <ds@darksole.vip>.
 While contributions from others are gratefully acknowledged, all
 intellectual property rights remain with the author. The models,
 algorithms, processes, products, methodologies, and concepts described
-herein are licensed exclusively for commercial use by the Klima
+herein are licenced exclusively for commercial use by the Klima
 Foundation. No other party may implement, copy, modify, or derive works
 from these materials without explicit written permission from the
 author.
@@ -27,7 +27,7 @@ class.** It is neither a conventional token nor a traditional protocol,
 but rather a continuously adaptive financial structure governed entirely
 by endogenous signals and risk-weighted economic inputs.
 
-The system is based on a dual-token architecture: **kVCM**, representing
+The system is based on a dual token architecture: **kVCM**, representing
 capital and asset exposure, and **K2**, reflecting systemic risk
 preferences. Together, these tokens structure the internal market
 dynamics without the need for oracles or discretionary oversight. This
@@ -41,7 +41,7 @@ architecture enables the system to:
 - Govern portfolio allocation, liquidity provisioning, and incentive
   distribution through deterministic smart contract logic.
 
-All token-holder actions – locking, allocation and staking – serve as
+All token holder actions – locking, allocation and staking – serve as
 inputs to a reflexive coordination mechanism. **kVCM** governs the
 allocation of capital to carbon assets, while **K2** parametrises the
 system’s risk assumptions and pricing capacity. This interaction defines
@@ -134,7 +134,7 @@ Figure 1: Klima 2.0 high-level design.
 Klima 2.0 provides a fundamental capital, liquidity and execution layer
 for wholesale carbon trading, capturing spreads and structural pricing
 across the asset class. It employs rational adaptive financial models to
-reflect token-holders’ collective risk-reward preferences, produced
+reflect token holders’ collective risk-reward preferences, produced
 solely through <u>native</u> smart contract balances from staking and
 liquidity functions allowing price discovery and harmonious functions to
 govern the stability and risk of the Risk-Balanced Asset token **kVCM**.
@@ -168,7 +168,7 @@ for the portfolio construction.
 tokens’ interests are fully aligned, and together perform dynamic
 portfolio optimisation as a result of collective owner utility function.
 
-### High level Architecture
+### High-Level Architecture
 
 <div id="fig-architecture">
 
@@ -197,7 +197,7 @@ Three economic pillars support the Klima 2.0 Automated Asset Manager:
       for the portfolio.
     - The time-locking pattern creates a **kVCM** Base Accrual curve,
       which is distributed to time-locked **kVCM** holders. This is
-      utilised to derive discount rates for forward delivery pricing in
+      utilised to derive discount rates for forward-delivery pricing in
       the Portfolio Manager and for weightings for time-locked **kVCM**
       holders in governance, as well as for their liquid carbon
       distribution.
@@ -213,7 +213,7 @@ Three economic pillars support the Klima 2.0 Automated Asset Manager:
       participates in general governance alongside time-locked **kVCM**
       holders.
 
-Noting that throughout the paper, *Locking* and *Staking* mean that
+Noting that throughout the paper, *locking* and *staking* mean that
 asset transfers are disabled for a specified period.
 
 ### Economics and Incentives
@@ -245,7 +245,7 @@ below in varying quantities depending on system balances.
 
 #### Real Carbon Yield
 
-Assuming the Portfolio holds liquid (spot) carbon credits, the Portfolio
+Assuming the portfolio holds liquid (spot) carbon credits, the Portfolio
 Manager emits a continuous Liquid Carbon Yield to time-locked **kVCM**
 holders with the proportion a function of the system state.
 
@@ -253,7 +253,7 @@ holders with the proportion a function of the system state.
 
 At the core of the platform, the Portfolio Manager accumulates, trades
 and distributes its carbon portfolio driven by parameters determined
-from collective token-holder actions (and inaction).
+from collective token holder actions (and inaction).
 
 <div id="fig-portfolio-manager">
 
@@ -268,7 +268,7 @@ certificates by pre-defined classification called **carbon class**. It
 does <u>not</u> sell carbon credits as those are issued through the
 Liquid Carbon Yield function.
 
-Token-holders collectively set the risk parameters for the pricing of
+Token holders collectively set the risk parameters for the pricing of
 **each class** by defining:
 
 - Portfolio weighting.
@@ -279,7 +279,7 @@ Additional **global** parameters are similarly determined:
 
 - Forward-delivery discount rates.
 
-- **kVCM** synthetic yield curve creating incentives for Portfolio
+- **kVCM** synthetic yield curve creating incentives for portfolio
   selection, liquidity provision and risk management contributions.
 
 - Proportion of Liquid Carbon Yield released for time-locked **kVCM**
@@ -299,7 +299,7 @@ token-holder activity.
 **kVCM** has <u>no maximum supply</u> but inflates upon carbon credit
 accumulation, and contracts upon issuance of carbon offset certificates.
 
-- When **Time-Locked** for fixed maturities:
+- When **time-locked** for fixed maturities:
 
   - *Optionally* selects carbon classes for portfolio weighting and
     pricing (‘active’).
@@ -316,7 +316,7 @@ accumulation, and contracts upon issuance of carbon offset certificates.
 - **Transactional** usage:
 
   - **Mint**: New **kVCM** is issued by the Portfolio Manager to
-    purchase new carbon credits for the Portfolio.
+    purchase new carbon credits for the portfolio.
 
   - **Burn**: **kVCM** are retired by the Portfolio Manager to issue
     carbon offset certificates.
@@ -342,7 +342,7 @@ Figure 5: Automated Asset Manager token utility.
 **K2** is a <u>fixed-supply</u> token issued programmatically over time
 with a dynamic allocation for **K2** **Incentives**.
 
-- When **User-Locked**:
+- When **user-locked**:
 
   - Shapes the pricing curve and spread of **kVCM**.
   - Determines the **kVCM** Risk Premium for staked liquidity providers.
@@ -380,7 +380,7 @@ Figure 6: **kVCM** utility functions.
 
 The **K2** token also has <u>two</u> utility functions:
 
-1.  **User-lock**: The **K2** token remains locked for at least 24
+1.  **User lock**: The **K2** token remains locked for at least 24
     hours.
 
 2.  **Risk allocation**: collective selection of carbon classes by
@@ -394,7 +394,7 @@ the **K2** token modulating capacity and risk.
 
 ### Initialisation of the kVCM Token
 
-The Klima Protocol has approximately **20 million tonnes** of Carbon
+The Klima Protocol has approximately **20 million tonnes** of carbon
 credits in its treasury as assets, a part of which will be used to
 create the initial issuance of **kVCM** tokens upon launch of Klima 2.0.
 
@@ -448,8 +448,8 @@ Table 1: Token Summary
 
 1.  **Carbon Credit Sellers**
 
-    Those wishing to monetise spot or forward delivery classes of
-    Carbon.
+    Those wishing to monetise spot- or forward-delivery classes of
+    carbon.
 
     ***Portfolio Manager**: Continuously acquires carbon credits using
     an autonomous pricing strategy based on carbon class, delivery and
@@ -501,7 +501,7 @@ Table 1: Token Summary
 
   The Automated Asset Manager does not permit the direct purchase of
   carbon credits from its portfolio (only carbon offset certificates),
-  but rather yields Liquid Carbon on a portfolio basis over time.
+  but rather yields liquid carbon on a portfolio basis over time.
 
 - **Liquid carbon**:
 
@@ -516,11 +516,11 @@ Table 1: Token Summary
   based on capacity pricing and forward discount rates folding natural
   returns into the portfolio capital.
 
-- **Dual tokens**:
+- **Dual token structure**:
 
   Whilst the **kVCM** token reflects asset economics, the **K2** token
   is essential for optimising pricing capacity and in return
-  **maximising risk-adjusted spreads** for the Portfolio. Since its
+  **maximising risk-adjusted spreads** for the portfolio. Since its
   earnings power is a function of the **kVCM** token value, its role as
   this spread optimiser is truly economically aligned and as such
   fundamental values of **kVCM** and **K2** are highly correlated.
@@ -534,7 +534,7 @@ Table 1: Token Summary
   - This enables investors collectively to model capital <u>and</u>
     yield proportions, allowing the price of the capital token to
     discover its **equilibrium** value with respect to the combination
-    of **current** and **projected** underlying Portfolio value.
+    of **current** and **projected** underlying portfolio value.
 
   - This flexibility enables a ‘pull to par’ effect as growth
     expectations lower, whilst not limiting price appreciation potential
@@ -566,14 +566,14 @@ no oversight or centralised management entity with discretionary powers.
       as well as price the forward curve for the AAM.
 
     - A **Liquid Carbon Yield** is issued continuously from the
-      Portfolio to time-locked **A** holders depending on the
+      portfolio to time-locked **A** holders depending on the
       participation in portfolio weightings.
 
     - Only **A** tokens participate in the Time-Locked Market.
 
 2.  **Portfolio Manager**: The Portfolio Manager swaps its own token
     **A** for carbon credits **C** (in) or carbon offset certificates
-    **C\*** (out) to build a Portfolio of Carbon credits.
+    **C\*** (out) to build a portfolio of carbon credits.
 
     - Both **time-locked** **A** and **user-locked** **G** are used in
       the portfolio manager whereby allocating **A** determines the
@@ -584,7 +584,7 @@ no oversight or centralised management entity with discretionary powers.
       weighting although it is not mandatory.*
 
     - Forward-delivery carbon (for a set of fixed dates out to 10 years)
-      is transacted simultaneously with spot liquid Carbon.
+      is transacted simultaneously with spot liquid carbon.
 
 3.  **Liquidity Market**: Here the tokens are traded in two core
     liquidity pairs with various incentives available to staked
@@ -614,7 +614,7 @@ of **standard maturities**. Time locks expire every 90 days on a rolling
 basis. There are always 40 maturities extending out to approximately 10
 years.
 
-- **Forward curve**: Aggregate time locking determines the shape of the
+- **Forward curve**: Aggregate time-locking determines the shape of the
   discount curve of the **A** token with regards to its purchasing rate
   of forward-delivery carbon.
 
@@ -686,7 +686,7 @@ The zero-coupon yield curve $Z_t$ is solved:
 Z_t = (1 - S) \, \frac{\Gamma_t}{E_t}
  \qquad(6)$$</span>
 
-Whereupon, the discount rate $B_t$ that forms the forward delivery curve
+Whereupon, the discount rate $B_t$ that forms the forward-delivery curve
 is derived:
 
 <span id="eq-discount-rate">$$
@@ -757,7 +757,7 @@ Figure 8: **A** inflation rate from time-locked token yields $\Delta S$.
 #### Governance Weightings
 
 Governance rights, for example the whitelisting (and blacklisting) of
-Carbon classes, and any other matter requiring token stakeholder voting,
+carbon classes, and any other matter requiring token stakeholder voting,
 are allocated to two cohorts:
 
 1.  Time-locked **A** tokens: $S_t$
@@ -800,12 +800,12 @@ of **A**:
 
 Defining:
 
-- $A$: Total time-locked **A** tokens allocated for pricing of Carbon
+- $A$: Total time-locked **A** tokens allocated for pricing of carbon
   classes, expressed as a proportion of the outstanding supply of **A**
   tokens.
 
 With $\mu$ as the daily emission factor applied to the portfolio holding
-spot delivery **C** tokens:
+spot-delivery carbon:
 
 <span id="eq-liquid-carbon-yield">$$
 \mu = \frac{A \, (1 - A)}{90}
@@ -825,7 +825,7 @@ generated by the Time-Locked Market.
 
 The combined allocations of **A** and **G** tokens creates a dynamic
 pricing matrix by carbon class and by time, enabling spot and forward
-trading of Carbon.
+trading of carbon.
 
 <div id="fig-portfolio-manager-detailed">
 
@@ -880,7 +880,7 @@ Defining:
   Manager deliverable per maturity $t$ where $C_{i0}$ reflects the
   liquid quantity.
 
-In order to determine the present-value quantity of Carbon, $\bar C_i$,
+In order to determine the present-value quantity of carbon, $\bar C_i$,
 we apply the discount curve from
 <a href="#eq-discount-rate" class="quarto-xref">Equation 7</a> to the
 liquidity schedule and sum the discounted holdings:
@@ -963,7 +963,7 @@ the effects become more pronounced as $\Delta \bar C_i$ increases.
 
 ##### Zero Carbon Scenario
 
-There are circumstances when there is zero carbon held in the Portfolio
+There are circumstances when there is zero carbon held in the portfolio
 for a particular class, i.e. ${C_i = 0}$, which invalidates the
 calculation of $\Delta \bar C_i$ and a different approach is required.
 
@@ -1135,7 +1135,7 @@ As we have seen, the **G** token has an impact on risk-pricing of **A**.
 As **G** staking increases, the relationship between the carbon class
 selected under $G_i$ and the portfolio token **A** strengthens. We can
 consider $G_i$ staking as an estimate of residual or idiosyncratic risk
-in the carbon-class and this allows us to calculate a portfolio beta
+in the carbon class and this allows us to calculate a portfolio beta
 $\beta$ from the implied betas of each carbon class $i$.
 
 <span id="eq-beta">$$

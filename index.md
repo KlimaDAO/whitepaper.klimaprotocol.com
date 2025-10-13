@@ -1,6 +1,6 @@
 # Klima 2.0
 The Dark Sole Enterprise Ltd <ds@darksole.vip>  
-with contributions from the Klima Foundation and Carbonmark
+with contributions from Klima Foundation and Carbonmark
 
 13 Oct 2025 (Version 1.45)
 
@@ -13,10 +13,9 @@ This document represents original work by dark_sole <ds@darksole.vip>.
 While contributions from others are gratefully acknowledged, all
 intellectual property rights remain with the author. The models,
 algorithms, processes, products, methodologies, and concepts described
-herein are licenced exclusively for commercial use by the Klima
-Foundation. No other party may implement, copy, modify, or derive works
-from these materials without explicit written permission from the
-author.
+herein are licenced exclusively for commercial use by Klima Foundation.
+No other party may implement, copy, modify, or derive works from these
+materials without explicit written permission from the author.
 
 © 2025 dark_sole. All rights reserved.
 

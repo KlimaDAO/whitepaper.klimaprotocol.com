@@ -1,8 +1,8 @@
 # Klima 2.0
 The Dark Sole Enterprise Ltd <ds@darksole.vip>  
-with contributions from Klima Foundation and Carbonmark
+with contributions from the Klima and Carbonmark teams
 
-13 Oct 2025 (Version 1.45)
+28 Oct 2025 (Version 1.46)
 
 <img src="brand/klimaprotocol.svg" style="width:50.0%"
 alt="Klima Protocol Logo." data-fig-align="center" />
@@ -13,9 +13,10 @@ This document represents original work by dark_sole <ds@darksole.vip>.
 While contributions from others are gratefully acknowledged, all
 intellectual property rights remain with the author. The models,
 algorithms, processes, products, methodologies, and concepts described
-herein are licenced exclusively for commercial use by Klima Foundation.
-No other party may implement, copy, modify, or derive works from these
-materials without explicit written permission from the author.
+herein are licenced exclusively for commercial use by the Klima
+Protocol. No other party may implement, copy, modify, or derive works
+from these materials without explicit written permission from the
+author.
 
 © 2025 dark_sole. All rights reserved.
 
@@ -484,7 +485,7 @@ Table 1: Token Summary
 
 5.  **Active Portfolio Optimisation**
 
-    ***K2 and kVCM Asset Selection**: The incentives and allocations are
+    ***K2 and kVCM asset selection**: The incentives and allocations are
     designed for those who wish to participate in overall risk
     management to collectively resolve for the optimal portfolio risks.*
 
@@ -713,6 +714,12 @@ inflation as
 R = \sum_{t=1}^{40} \Delta S_t
  \qquad(10)$$</span>
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-time-locked-market-state">
 
 <div id="fig-time-locked-market-state-yield">
@@ -736,6 +743,8 @@ data-ref-parent="fig-time-locked-market-state" />
 </div>
 
 Figure 7: Example of a Time-Locked Market state.
+
+</div>
 
 </div>
 
@@ -888,11 +897,19 @@ liquidity schedule and sum the discounted holdings:
 \bar C_i = C_{i0} + \sum_{t=1}^{40} B_t \, C_{it}
  \qquad(16)$$</span>
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-carbon-held-in-the-aam">
 
 ![](figures/carbon-held-in-the-aam.svg)
 
 Figure 11: Carbon held in the portfolio.
+
+</div>
 
 </div>
 
@@ -906,11 +923,19 @@ sold with a specific maturity index $t$:
 Once standardised by the discount curve, trades can be aggregated in the
 same class for the defined trade or auction period.
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-carbon-bought-by-the-aam">
 
 ![](figures/carbon-bought-by-the-aam.svg)
 
 Figure 12: Carbon bought by the Portfolio Manager.
+
+</div>
 
 </div>
 
@@ -941,6 +966,12 @@ pricing of the **A** token. The data has been normalised in
 <a href="#fig-a-price-curves-normalised"
 class="quarto-xref">Figure 14</a> to $\Delta \bar C_i \, A_i$.
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-a-price-curves">
 
 ![](figures/a-price-curves.svg)
@@ -954,6 +985,8 @@ Figure 13: **A** price curves ($\Delta A$).
 ![](figures/a-price-curves-normalised.svg)
 
 Figure 14: Normalised **A** price curves.
+
+</div>
 
 </div>
 
@@ -978,6 +1011,12 @@ $G_\emptyset$:
   \left( A_\emptyset - \frac{A_\emptyset^2 (1 - G_\emptyset)^2}{2} \right)^2
  \qquad(20)$$</span>
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-a-price-curves-zero-carbon">
 
 ![](figures/a-price-curves-zero-carbon.svg)
@@ -991,6 +1030,8 @@ Figure 15: **A** price curves ($\Delta A$) in the zero carbon scenario.
 ![](figures/a-price-curves-zero-carbon-normalised.svg)
 
 Figure 16: Normalised **A** price curves in the zero carbon scenario.
+
+</div>
 
 </div>
 
@@ -1019,11 +1060,19 @@ class="quarto-xref">Equation 21</a> as $\mathsf{RHS}$:
 \Delta C_i = \exp(\mathsf{RHS}) - 1
  \qquad(22)$$</span>
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-proportion-of-carbon-retired">
 
 ![](figures/proportion-of-carbon-retired.svg)
 
 Figure 17: Proportion of carbon retired.
+
+</div>
 
 </div>
 
@@ -1049,6 +1098,12 @@ holders.
 shows the spread captured on a ‘round trip’ by the system where
 $\varepsilon$ is the proportion retained:
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-carbon-spread">
 
 ![](figures/carbon-spread.svg)
@@ -1057,10 +1112,18 @@ Figure 18: Carbon ‘spread’.
 
 </div>
 
+</div>
+
 <a href="#fig-carbon-spread-components"
 class="quarto-xref">Figure 19</a> shows the component ‘spread’
 contributions on a carbon sale and purchase round trip of a carbon
 offset certificate.
+
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
 
 <div id="fig-carbon-spread-components">
 
@@ -1085,6 +1148,8 @@ data-ref-parent="fig-carbon-spread-components" />
 </div>
 
 Figure 19: Carbon ‘spread’ components.
+
+</div>
 
 </div>
 
@@ -1373,6 +1438,12 @@ Giving supply function $\operatorname{P}(t)$ as:
 
 $P_0$ set at 7% and $T$ at 24 months:
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-incentive-issuance">
 
 ![](figures/incentive-issuance.svg)
@@ -1438,6 +1509,8 @@ data-ref-parent="fig-k2-risk-metrics" />
 </div>
 
 Figure 30: **K2** token supply risk metrics.
+
+</div>
 
 </div>
 
@@ -1544,6 +1617,12 @@ buckets:
          I_{AQ} = \frac{\lambda_Q}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
           \qquad(41)$$</span>
 
+<div class="panel-sidebar">
+
+</div>
+
+<div class="panel-fill">
+
 <div id="fig-incentives-non-treasury">
 
 <div id="fig-allocation-token-locks">
@@ -1568,6 +1647,8 @@ data-ref-parent="fig-incentives-non-treasury" />
 
 Figure 34: Share of non-treasury incentives $I_S$, $I_G$, $I_{AG}$ and
 $I_{AQ}$.
+
+</div>
 
 </div>
 

@@ -2,7 +2,7 @@
 The Dark Sole Enterprise Ltd <ds@darksole.vip>  
 with contributions from the Klima and Carbonmark teams
 
-28 Oct 2025 (Version 1.46)
+4 Dec 2025 (Version 1.47)
 
 <img src="brand/klimaprotocol.svg" style="width:50.0%"
 alt="Klima Protocol Logo." data-fig-align="center" />
@@ -199,8 +199,7 @@ Three economic pillars support the Klima 2.0 Automated Asset Manager:
       which is distributed to time-locked **kVCM** holders. This is
       utilised to derive discount rates for forward-delivery pricing in
       the Portfolio Manager and for weightings for time-locked **kVCM**
-      holders in governance, as well as for their liquid carbon
-      distribution.
+      holders in governance.
 
 3.  **Liquidity Market**:
 
@@ -243,12 +242,6 @@ below in varying quantities depending on system balances.
 
 3.  Both **kVCM** and **K2** stakers.
 
-#### Real Carbon Yield
-
-Assuming the portfolio holds liquid (spot) carbon credits, the Portfolio
-Manager emits a continuous Liquid Carbon Yield to time-locked **kVCM**
-holders with the proportion a function of the system state.
-
 ### Portfolio Manager
 
 At the core of the platform, the Portfolio Manager accumulates, trades
@@ -265,8 +258,7 @@ Figure 4: Klima 2.0 Portfolio Manager.
 
 The Portfolio Manager **purchases** carbon credits and **sells** offset
 certificates by pre-defined classification called **carbon class**. It
-does <u>not</u> sell carbon credits as those are issued through the
-Liquid Carbon Yield function.
+does <u>not</u> sell carbon credits.
 
 Token holders collectively set the risk parameters for the pricing of
 **each class** by defining:
@@ -281,9 +273,6 @@ Additional **global** parameters are similarly determined:
 
 - **kVCM** synthetic yield curve creating incentives for portfolio
   selection, liquidity provision and risk management contributions.
-
-- Proportion of Liquid Carbon Yield released for time-locked **kVCM**
-  holders.
 
 There are no oracles or external inputs required for Klima 2.0 as it is
 fully autonomous and responds to its own native state of token balances.
@@ -308,8 +297,7 @@ accumulation, and contracts upon issuance of carbon offset certificates.
     the collective time locking pattern over time.
 
   - Generates a **synthetic yield** of **kVCM** based on the forward
-    curve and a **Liquid Carbon Yield** based on the active selection
-    ratio.
+    curve.
 
   - Participates in governance for whitelisting carbon assets.
 
@@ -471,8 +459,7 @@ Table 1: Token Summary
     financial exposure to a basket of carbon assets.
 
     ***Time-Locked Market**: Provides a daily time-based yield for those
-    time-locking **kVCM** tokens, comprised of both a synthetic **kVCM**
-    Base Accrual and real portfolio Liquid Carbon Yield component.*
+    time-locking **kVCM** tokens called Base Accrual.*
 
 4.  **Liquidity Providers**
 
@@ -500,8 +487,7 @@ Table 1: Token Summary
 - **Adverse selection**:
 
   The Automated Asset Manager does not permit the direct purchase of
-  carbon credits from its portfolio (only carbon offset certificates),
-  but rather yields liquid carbon on a portfolio basis over time.
+  carbon credits from its portfolio (only carbon offset certificates).
 
 - **Liquid carbon**:
 
@@ -525,29 +511,6 @@ Table 1: Token Summary
   this spread optimiser is truly economically aligned and as such
   fundamental values of **kVCM** and **K2** are highly correlated.
 
-- **Hybrid asset model**
-
-  The rate of Liquid Carbon Yield for **kVCM** generated from the
-  underlying portfolio is derived from the system state of the **kVCM**
-  token balances.
-
-  - This enables investors collectively to model capital <u>and</u>
-    yield proportions, allowing the price of the capital token to
-    discover its **equilibrium** value with respect to the combination
-    of **current** and **projected** underlying portfolio value.
-
-  - This flexibility enables a ‘pull to par’ effect as growth
-    expectations lower, whilst not limiting price appreciation potential
-    in high growth projection markets.
-
-  - The hybrid model incorporates both **asset stabilisation** plus
-    **equity-like** returns.
-
-  Critically this approach enables the **kVCM** token to act as a true
-  <u>medium of exchange</u> for the carbon trading activity of the
-  users, propagating the feedback loops to both the **kVCM** and **K2**
-  tokens.
-
 ## Core Economic Pillars
 
 From this Section, we refer to **kVCM** and **K2** tokens as **A** and
@@ -564,10 +527,6 @@ no oversight or centralised management entity with discretionary powers.
     - The collective temporal staking pattern produces a **Synthetic
       Yield** curve in **A** tokens to reward time-locked token holders,
       as well as price the forward curve for the AAM.
-
-    - A **Liquid Carbon Yield** is issued continuously from the
-      portfolio to time-locked **A** holders depending on the
-      participation in portfolio weightings.
 
     - Only **A** tokens participate in the Time-Locked Market.
 
@@ -622,12 +581,6 @@ years.
   floating yield of new **A** tokens following the shape of this
   discount curve called **Base Accrual**. Base Accrual is calculated
   daily and accumulates to the principal.
-
-- **Liquid Carbon Yield**: Liquid Carbon emitted to time-locked **A**
-  token holders on a daily basis assuming the portfolio holds liquid
-  carbon assets. The emission rate responds to time-locked **A** token
-  holders allocating their token for portfolio pricing, and up to ~22%
-  per quarter is released.
 
 - **Liquidity**: There is no early unlocking; all principal and
   accumulated yield is released only at time lock expiration.
@@ -804,26 +757,6 @@ of **A**:
      W_t = \frac{w_t}{\sum_{j=1}^{40} \left( \frac 1 2 v_j + w_j \right)}
       \qquad(14)$$</span>
 
-#### Liquid Carbon Yield
-
-Defining:
-
-- $A$: Total time-locked **A** tokens allocated for pricing of carbon
-  classes, expressed as a proportion of the outstanding supply of **A**
-  tokens.
-
-With $\mu$ as the daily emission factor applied to the portfolio holding
-spot-delivery carbon:
-
-<span id="eq-liquid-carbon-yield">$$
-\mu = \frac{A \, (1 - A)}{90}
- \qquad(15)$$</span>
-
-Liquid Carbon Yield is allocated to time-locked **A** tokens holders
-using the (normalised) *initial voting weight* $v_t$ determined in
-<a href="#eq-voting-weights-time-locks-initial"
-class="quarto-xref">Equation 11</a>.
-
 ### Portfolio Manager
 
 The Portfolio Manager’s role of swapping **A** for carbon is managed
@@ -895,7 +828,7 @@ liquidity schedule and sum the discounted holdings:
 
 <span id="eq-present-value-carbon">$$
 \bar C_i = C_{i0} + \sum_{t=1}^{40} B_t \, C_{it}
- \qquad(16)$$</span>
+ \qquad(15)$$</span>
 
 <div class="panel-sidebar">
 
@@ -918,7 +851,7 @@ sold with a specific maturity index $t$:
 
 <span id="eq-present-value-carbon-change">$$
 \Delta \bar C_i = \Delta C_{i0} + \sum_{t=1}^{40} B_t \, \Delta C_{it}
- \qquad(17)$$</span>
+ \qquad(16)$$</span>
 
 Once standardised by the discount curve, trades can be aggregated in the
 same class for the defined trade or auction period.
@@ -947,15 +880,15 @@ determined as:
 <span id="eq-a-change-intermediary-step">$$
 \ln(1 + \Delta A) =
   \left( A_i - \frac{A_i^2 \, (1 - G_i)^2}{2} \right) \ln(1 + \Delta \bar C_i)
- \qquad(18)$$</span>
+ \qquad(17)$$</span>
 
 Denoting the expression on the right hand side of
 <a href="#eq-a-change-intermediary-step"
-class="quarto-xref">Equation 18</a> as $\mathsf{RHS}$:
+class="quarto-xref">Equation 17</a> as $\mathsf{RHS}$:
 
 <span id="eq-a-change">$$
 \Delta A = \exp(\mathsf{RHS}) - 1
- \qquad(19)$$</span>
+ \qquad(18)$$</span>
 
 Finally, $\Delta A$ is applied to the outstanding supply of **A** to
 solve for token quantities.
@@ -1009,7 +942,7 @@ $G_\emptyset$:
 \Delta A =
   \frac{\Delta \bar C_\emptyset}{1 + \Delta \bar C_\emptyset} \, 
   \left( A_\emptyset - \frac{A_\emptyset^2 (1 - G_\emptyset)^2}{2} \right)^2
- \qquad(20)$$</span>
+ \qquad(19)$$</span>
 
 <div class="panel-sidebar">
 
@@ -1050,15 +983,15 @@ $C_{i0}$:
 <span id="eq-carbon-change-intermediary-step">$$
 \ln(1 + \Delta C_i) =
   \frac{-\ln(1 + \Delta A)}{A_i + \frac 1 2 A_i^2 \, (1 - G_i)^2}
- \qquad(21)$$</span>
+ \qquad(20)$$</span>
 
 As before, denoting the expression on the right hand side of
 <a href="#eq-carbon-change-intermediary-step"
-class="quarto-xref">Equation 21</a> as $\mathsf{RHS}$:
+class="quarto-xref">Equation 20</a> as $\mathsf{RHS}$:
 
 <span id="eq-carbon-change">$$
 \Delta C_i = \exp(\mathsf{RHS}) - 1
- \qquad(22)$$</span>
+ \qquad(21)$$</span>
 
 <div class="panel-sidebar">
 
@@ -1084,8 +1017,6 @@ with $A_i$ and decreasing on $G_i$.
 
 An offset certificate for a carbon class with a zero **A** allocation
 cannot be extracted from the portfolio by swapping in **A** tokens.
-However, it is still part of the Liquid Carbon Yield detailed in
-<a href="#sec-liquid-carbon-yield" class="quarto-xref">Section 3.1.3</a>.
 
 ##### Liquidation: $\Delta A = 1$
 
@@ -1204,7 +1135,7 @@ $\beta$ from the implied betas of each carbon class $i$.
 
 <span id="eq-beta">$$
 \beta = \sqrt{\sum_{i=1}^n A_i - A_i \, (1 - G_i)^2}
- \qquad(23)$$</span>
+ \qquad(22)$$</span>
 
 The portfolio $\beta$ determines a yield factor for the liquidity pools
 of **A** to compensate for the implied risk levels.
@@ -1291,7 +1222,7 @@ The allocation to user-locked **G** tokens, $\lambda_{GG}$:
 
 <span id="eq-lambda-gg">$$
 \lambda_{GG} = \frac{1 - A_Q}{1 + \left( \frac{\sum_{i=1}^{n}{G_i}}{G_G} \right)^2}
- \qquad(24)$$</span>
+ \qquad(23)$$</span>
 
 <div id="fig-g-stake-allocation">
 
@@ -1309,13 +1240,13 @@ pools:
 
 <span id="eq-lambda-g">$$
 \lambda_G = (1 - \lambda_{GG}) \frac{2 A_G}{2 A_G + A_Q \sqrt 2}
- \qquad(25)$$</span>
+ \qquad(24)$$</span>
 
 For completeness:
 
 <span id="eq-lambda-q">$$
 \lambda_Q = 1 - \lambda_{GG} - \lambda_G
- \qquad(26)$$</span>
+ \qquad(25)$$</span>
 
 <div id="fig-liquidity-pool-split">
 
@@ -1331,19 +1262,19 @@ For $\lambda_{GG}$, $\lambda_G$, $\lambda_Q$ we apply $\beta$:
 
 <span id="eq-capital-lambda">$$
 \Lambda_X = \lambda_X \, \beta, \quad \text{for } X \in \{GG, G, Q\}
- \qquad(27)$$</span>
+ \qquad(26)$$</span>
 
 Taking $b$ as a discount parameter:
 
 <span id="eq-discount-parameter">$$
 b = \frac{\sum_1^{40} Z_t \, S_t \, B_t}{\sum_1^{40} Z_t \, S_t }
- \qquad(28)$$</span>
+ \qquad(27)$$</span>
 
 The total Risk Premium tokens $R_\lambda$:
 
 <span id="eq-risk-premium">$$
 R_\lambda = b \, R \, (\Lambda_{GG} + \Lambda_G + \Lambda_Q)
- \qquad(29)$$</span>
+ \qquad(28)$$</span>
 
 The allocations of $R_\lambda$ are pro-rata to $\Lambda_{GG}$,
 $\Lambda_G$, $\Lambda_Q$, and thereafter:
@@ -1356,11 +1287,11 @@ $\Lambda_G$, $\Lambda_Q$, and thereafter:
 
     <span id="eq-risky-premium-weighting-ag-pool">$$
      G_t = \frac{Z_t \, L_{Gt} \, B_t}{\sum Z_t \, L_{Gt} \, B_t}
-      \qquad(30)$$</span>
+      \qquad(29)$$</span>
 
     <span id="eq-risky-premium-weighting-aq-pool">$$
      Q_t = \frac{Z_t \, L_{Qt} \, B_t}{\sum Z_t \, L_{Qt} \, B_t}
-      \qquad(31)$$</span>
+      \qquad(30)$$</span>
 
     Where $L_{Gt}$, $L_{Qt}$ are the proportion of all liquidity locked
     in each time bucket for <span class="overline">**AG**</span> and
@@ -1422,19 +1353,19 @@ Setting $x_0$ from the initial supply parameter:
 
 <span id="eq-incentives-issuance-x-0">$$
 x_0 = \ln\left( \frac{P_0}{1 - P_0} \right)
- \qquad(32)$$</span>
+ \qquad(31)$$</span>
 
 With $x_t$ at time point $t \in (0, \infty)$:
 
 <span id="eq-incentives-issuance-x-t">$$
 x_t = x_0 \, \left( 1 - \frac t T \right)
- \qquad(33)$$</span>
+ \qquad(32)$$</span>
 
 Giving supply function $\operatorname{P}(t)$ as:
 
 <span id="eq-incentives-issuance-curve">$$
 \operatorname{P}(t) = \frac{\exp(x_t)}{\exp(x_t) + 1}
- \qquad(34)$$</span>
+ \qquad(33)$$</span>
 
 $P_0$ set at 7% and $T$ at 24 months:
 
@@ -1540,7 +1471,7 @@ Where $\upsilon = 0$ if $G + L = 0$, otherwise:
 
 <span id="eq-relative-utilisation">$$
 \upsilon = \left( \frac{2 G L}{G^2 + L^2} \right)^2
- \qquad(35)$$</span>
+ \qquad(34)$$</span>
 
 <div id="fig-relative-utilisation">
 
@@ -1555,7 +1486,7 @@ if $G + L = 0$, otherwise:
 
 <span id="eq-absolute-utilisation">$$
 \eta = \frac{2 G L}{G (1 - G) + L ( 1 - L)}
- \qquad(36)$$</span>
+ \qquad(35)$$</span>
 
 <div id="fig-absolute-utilisation">
 
@@ -1574,7 +1505,7 @@ $\upsilon$:
 
 <span id="eq-allocation-treasury">$$
 I_T = 1 - \upsilon \, \eta
- \qquad(37)$$</span>
+ \qquad(36)$$</span>
 
 #### Post Treasury
 
@@ -1591,13 +1522,13 @@ buckets:
 
         <span id="eq-allocation-locked-a">$$
          I_S = S \, \frac{L^2}{G^2 + L^2}
-          \qquad(38)$$</span>
+          \qquad(37)$$</span>
 
     2.  User-locked **G**, $I_G$:
 
         <span id="eq-allocation-locked-g">$$
          I_G = (1 - S) \, \frac{L^2}{G^2 + L^2}
-          \qquad(39)$$</span>
+          \qquad(38)$$</span>
 
 2.  Liquidity
 
@@ -1609,13 +1540,13 @@ buckets:
 
         <span id="eq-allocation-pool-ag">$$
          I_{AG} = \frac{\lambda_G}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
-          \qquad(40)$$</span>
+          \qquad(39)$$</span>
 
     4.  <span class="overline">**AQ**</span> pool $I_{AQ}$:
 
         <span id="eq-allocation-pool-aq">$$
          I_{AQ} = \frac{\lambda_Q}{1 - \lambda_{GG}} \, \frac{G^2}{G^2 + L^2}
-          \qquad(41)$$</span>
+          \qquad(40)$$</span>
 
 <div class="panel-sidebar">
 
